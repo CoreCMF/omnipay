@@ -6,7 +6,7 @@
         "CoreCMF",
         "omnipay",
         "alipay",
-        "weiyin",
+        "wechat"
     ],
     "homepage": "https://github.com/CoreCMF/omnipay",
     "license": "laravel vue corecmf omnipay",
