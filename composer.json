@@ -1,0 +1,55 @@
+{
+    "name": "corecmf/omnipay",
+    "type": "Library",
+    "description": "corecmf omnipay package",
+    "keywords": [
+        "CoreCMF",
+        "omnipay",
+        "alipay",
+        "weiyin",
+    ],
+    "homepage": "https://github.com/CoreCMF/omnipay",
+    "license": "laravel vue corecmf omnipay",
+    "authors": [
+        {
+            "name": "bigrocs",
+            "email": "bigrocs@qq.com",
+            "homepage": "http://www.bigrocs.vip",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "~5.6|~7.0",
+        "CoreCMF/admin": "1.1.*",
+        "CoreCMF/core": "1.1.*",
+        "yangyifan/upload": "^0.2.1",
+        "illuminate/support": "~5.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit" : "~4.0||~5.0||~6.0",
+        "squizlabs/php_codesniffer": "^2.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "CoreCMF\\Omnipay\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "CoreCMF\\Omnipay\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "check-style": "phpcs -p --standard=PSR2 --runtime-set ignore_errors_on_exit 1 --runtime-set ignore_warnings_on_exit 1 src tests",
+        "fix-style": "phpcbf -p --standard=PSR2 --runtime-set ignore_errors_on_exit 1 --runtime-set ignore_warnings_on_exit 1 src tests"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    }
+}
