@@ -10,15 +10,15 @@
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::group(['prefix' => 'api', 'middleware' => 'api', 'namespace' => 'CoreCMF\Storage\Http\Controllers\Api', 'as' => 'api.'], function () {
+Route::group(['prefix' => 'api', 'middleware' => 'api', 'namespace' => 'CoreCMF\omnipay\Http\Controllers\Api', 'as' => 'api.'], function () {
     /*
     |--------------------------------------------------------------------------
     | 需要用户认证路由模块
     |--------------------------------------------------------------------------
     */
-    Route::group(['prefix' => 'storage', 'as' => 'storage.', 'middleware' => ['auth:api','adminRole']], function () {
+    Route::group(['prefix' => 'omnipay', 'as' => 'omnipay.', 'middleware' => ['auth:api','adminRole']], function () {
   	    Route::group(['prefix' => 'config', 'as' => 'config.'], function () {
-    		    Route::post('/',                ['as' => 'index',     'uses' => 'ConfigController@index']);
+    		    Route::post('/',                ['as' => 'index',      'uses' => 'ConfigController@index']);
             Route::post('status',           ['as' => 'status',     'uses' => 'ConfigController@status']);
     		    Route::post('delete',           ['as' => 'delete',     'uses' => 'ConfigController@delete']);
     		    Route::post('add',              ['as' => 'add',        'uses' => 'ConfigController@add']);
