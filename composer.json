@@ -22,7 +22,7 @@
         "php": "~5.6|~7.0",
         "CoreCMF/admin": "1.1.*",
         "CoreCMF/core": "1.1.*",
-        "yangyifan/upload": "^0.2.1",
+        "symfony/event-dispatcher": "^2.8",
         "illuminate/support": "~5.1"
     },
     "require-dev": {
