@@ -13,5 +13,5 @@ return [
         Ignited\LaravelOmnipay\LaravelOmnipayServiceProvider::class,
         CoreCMF\Omnipay\Providers\EventServiceProvider::class,//事件服务
     ],
-    'debug' => true,
+    'sandbox' => true,
 ];

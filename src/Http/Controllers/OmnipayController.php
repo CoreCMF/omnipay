@@ -12,7 +12,7 @@ class OmnipayController extends Controller
 
     public function __construct(){
         $this->gateway = resolve('omnipay');
-        if (config('omnipay.debug')) {
+        if (config('omnipay.sandbox')) {
             $this->gateway->sandbox();
         }
     }
