@@ -3,6 +3,7 @@
 namespace CoreCMF\Omnipay;
 
 use Omnipay;
+use DB;
 use Illuminate\Support\ServiceProvider;
 
 class OmnipayServiceProvider extends ServiceProvider
