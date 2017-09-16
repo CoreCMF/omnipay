@@ -10,6 +10,7 @@ return [
     'install' => 'corecmf:omnipay:install',//安装artisan命令
     'uninstall' => 'corecmf:omnipay:uninstall',//卸载artisan命令
     'providers' => [
+        Ignited\LaravelOmnipay\LaravelOmnipayServiceProvider::class,
         CoreCMF\Omnipay\Providers\EventServiceProvider::class,//事件服务
     ],
 ];

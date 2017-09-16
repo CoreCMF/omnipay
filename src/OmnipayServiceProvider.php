@@ -2,6 +2,7 @@
 
 namespace CoreCMF\Omnipay;
 
+use Omnipay;
 use Illuminate\Support\ServiceProvider;
 
 class OmnipayServiceProvider extends ServiceProvider
@@ -20,10 +21,11 @@ class OmnipayServiceProvider extends ServiceProvider
         //加载artisan commands
         $this->commands($this->commands);
         //配置路由
-        $this->loadRoutesFrom(__DIR__.'/Routes/api.php');
+        $this->loadRoutesFrom(__DIR__.'/Routes/web.php');
         //迁移文件配置
         $this->loadMigrationsFrom(__DIR__.'/Databases/migrations');
         // 加载配置
+        $this->mergeConfigFrom(__DIR__.'/Config/laravel-omnipay.php', 'laravel-omnipay');
         $this->mergeConfigFrom(__DIR__.'/Config/config.php', 'omnipay');
         $this->initService();
     }
