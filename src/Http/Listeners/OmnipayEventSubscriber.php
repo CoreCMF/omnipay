@@ -2,35 +2,23 @@
 
 namespace CoreCMF\Omnipay\Http\Listeners;
 
-use CoreCMF\Omnipay\Http\Models\Config;
 /**
- * [SocialiteEventSubscriber 社会登录事件订阅者]
+ * [OmnipayEventSubscriber 支付扩展包订阅器]
  */
 class OmnipayEventSubscriber
 {
-    private $configModel;
 
-    public function __construct(Config $configPro){
-       $this->configModel = $configPro;
-    }
     /**
      * [onBuilderTablePackage 后台模型table渲染处理]
      * @param  [type] $event [description]
      * @return [type]        [description]
      */
-    public function onBuilderTablePackage($event)
+    public function onAdminMain($event)
     {
-        $table = $event->table;
-        if ($table->event == 'package') {
-            $table->data->transform(function ($item, $key) {
-                if ($item->name == 'Omnipay') {
-                    // $item->rightButton = [
-                    //     ['title'=>'云存储管理','apiUrl'=> route('api.omnipay.config.index'),'type'=>'info', 'icon'=>'fa fa-edit']
-                    // ];
-                }
-                return $item;
-            });
-        }
+        // $main = $event->main;
+        // if ($main->event == 'AdminMain') {
+        //     // dd($main);
+        // }
     }
     /**
      * 为订阅者注册监听器.
@@ -40,8 +28,8 @@ class OmnipayEventSubscriber
     public function subscribe($events)
     {
         $events->listen(
-            'CoreCMF\Core\Events\BuilderTable',
-            'CoreCMF\Omnipay\Http\Listeners\OmnipayEventSubscriber@onBuilderTablePackage'
+            'CoreCMF\Core\Support\Events\BuilderMain',
+            'CoreCMF\Omnipay\Http\Listeners\OmnipayEventSubscriber@onAdminMain'
         );
     }
 
