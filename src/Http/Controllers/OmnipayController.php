@@ -39,7 +39,7 @@ class OmnipayController extends Controller
         ];
 
         $response = $this->gateway->completePurchase($options)->send();
-        dd($response,$response->isSuccessful(),$response->isPaid());
+        dd($response->isSuccessful(),$response->isPaid());
       $response =get_class_methods($response);
         dd($response);
     }
