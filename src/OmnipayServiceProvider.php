@@ -27,8 +27,6 @@ class OmnipayServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(__DIR__.'/Databases/migrations');
         // 加载配置
         $this->mergeConfigFrom(__DIR__.'/Config/laravel-omnipay.php', 'laravel-omnipay');
-        $this->mergeConfigFrom(__DIR__.'/Config/config.php', 'omnipay');
-        $this->initService();
     }
 
     /**
@@ -38,13 +36,15 @@ class OmnipayServiceProvider extends ServiceProvider
      */
     public function register()
     {
-
+        $this->initService();
     }
     /**
      * 初始化服务
      */
     public function initService()
     {
+
+        $this->mergeConfigFrom(__DIR__.'/Config/config.php', 'omnipay');
         //注册providers服务
         $this->registerProviders();
     }
