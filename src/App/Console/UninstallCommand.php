@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreCMF\Omnipay\Http\Console;
+namespace CoreCMF\Omnipay\App\Console;
 
 use Illuminate\Console\Command;
 

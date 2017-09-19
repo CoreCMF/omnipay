@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreCMF\Omnipay\Http\Controllers;
+namespace CoreCMF\Omnipay\App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;

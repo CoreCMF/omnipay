@@ -9,8 +9,8 @@ use Illuminate\Support\ServiceProvider;
 class OmnipayServiceProvider extends ServiceProvider
 {
     protected $commands = [
-        \CoreCMF\Omnipay\Http\Console\InstallCommand::class,
-        \CoreCMF\Omnipay\Http\Console\UninstallCommand::class,
+        \CoreCMF\Omnipay\App\Console\InstallCommand::class,
+        \CoreCMF\Omnipay\App\Console\UninstallCommand::class,
     ];
     /**
      * Perform post-registration booting of services.
@@ -21,12 +21,8 @@ class OmnipayServiceProvider extends ServiceProvider
     {
         //加载artisan commands
         $this->commands($this->commands);
-        //配置路由
-        $this->loadRoutesFrom(__DIR__.'/Routes/web.php');
         //迁移文件配置
         $this->loadMigrationsFrom(__DIR__.'/Databases/migrations');
-        // 加载配置
-        $this->mergeConfigFrom(__DIR__.'/Config/laravel-omnipay.php', 'laravel-omnipay');
     }
 
     /**
@@ -43,8 +39,14 @@ class OmnipayServiceProvider extends ServiceProvider
      */
     public function initService()
     {
-
-        $this->mergeConfigFrom(__DIR__.'/Config/config.php', 'omnipay');
+        //配置路由
+        $this->loadRoutesFrom(__DIR__.'/Routes/web.php');
+        $this->loadRoutesFrom(__DIR__.'/Routes/api.php');
+        // 加载配置
+        $this->mergeConfigFrom(__DIR__.'/Config/config.php', 'omnipay');//组件配置信息
+        $this->mergeConfigFrom(__DIR__.'/Config/menu.php', 'omnipay-menu');//菜单
+        $this->mergeConfigFrom(__DIR__.'/Config/route.php', 'omnipay-route');//前端路由
+        $this->mergeConfigFrom(__DIR__.'/Config/laravel-omnipay.php', 'laravel-omnipay');
         //注册providers服务
         $this->registerProviders();
     }

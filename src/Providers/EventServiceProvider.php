@@ -32,6 +32,6 @@ class EventServiceProvider extends ServiceProvider
      * @var [type]
      */
     protected $subscribe = [
-         'CoreCMF\Omnipay\Http\Listeners\OmnipayEventSubscriber',
+         'CoreCMF\Omnipay\App\Listeners\OmnipayEventSubscriber',
     ];
 }

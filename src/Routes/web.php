@@ -15,7 +15,7 @@
 | Admin后台路由设置 routes
 |--------------------------------------------------------------------------
 */
-Route::group(['prefix' => 'Omnipay', 'middleware' => 'web', 'namespace' => 'CoreCMF\Omnipay\Http\Controllers', 'as' => 'Omnipay.'], function () {
+Route::group(['prefix' => 'Omnipay', 'middleware' => 'web', 'namespace' => 'CoreCMF\Omnipay\App\Http\Controllers', 'as' => 'Omnipay.'], function () {
     Route::get('{service}',                 [ 'as' => 'pay', 'uses' => 'OmnipayController@pay']);
     Route::get('{service}/callback',        [ 'as' => 'callback', 'uses' => 'OmnipayController@callback']);
 });

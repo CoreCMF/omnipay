@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreCMF\Omnipay\Http\Models;
+namespace CoreCMF\Omnipay\App\Models;
 
 use Schema;
 use Illuminate\Database\Eloquent\Model;

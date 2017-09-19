@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreCMF\Omnipay\Http\Validator;
+namespace CoreCMF\Omnipay\App\Validator;
 
 use CoreCMF\Core\Support\Validator\Rules as coreRules;
 class ConfigRules extends coreRules
