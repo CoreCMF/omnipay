@@ -27,9 +27,6 @@ class OmnipayController extends Controller
         ];
         $response = $this->gateway->purchase()->setBizContent($order)->send();
         $response->redirect();
-        dd($gateway);
-        dd($service, $redirect);
-        return ;
     }
     public function callback($service, Request $request)
     {

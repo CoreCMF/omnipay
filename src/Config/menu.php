@@ -6,17 +6,17 @@ return [
         [
             'path' => '',
             'title' => '支付管理',
-            'icon' => 'fa fa-unlock-alt',
+            'icon' => 'fa fa-cny',
             'subMenus' => [
               [
                 'path' => '/admin/omnipay/config',
-                'title' => '支付管理',
-                'icon' => 'fa fa-unlock-alt',
+                'title' => '支付配置',
+                'icon' => 'fa fa-ge',
               ],
               [
                 'path' => '/admin/omnipay/order',
                 'title' => '订单管理',
-                'icon' => 'fa fa-unlock-alt',
+                'icon' => 'fa fa-first-order',
               ],
             ]
         ]
