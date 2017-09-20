@@ -3,7 +3,7 @@
 return [
 
 	// The default gateway to use
-	'default' => 'alipay',
+	'default' => 'paypal',
 
 	// Add in each gateway here
 	'gateways' => [
@@ -26,6 +26,17 @@ return [
         'returnUrl' => 'http://corecmf.dev/Omnipay/alipay/callback',
         'notifyUrl' => 'http://corecmf.dev/Omnipay/alipay'
       ]
-    ]
+    ],
+		'unionpay' => [
+		    'driver' => 'UnionPay_Express',
+		    'options' => [
+		        'merId' => '777290058151800',
+		        'certPath' => storage_path('app/certificates/unionpay/unionpay_acp.pfx'),
+		        'certPassword' =>'000000',
+		        'certDir'=> storage_path('app/certificates/unionpay'),
+		        'returnUrl' => 'http://corecmf.dev/Omnipay/unionpay/callback',
+		        'notifyUrl' => 'http://corecmf.dev/Omnipay/unionpay'
+		    ]
+		]
 	]
 ];

@@ -7,37 +7,83 @@ use App\Http\Controllers\Controller;
 
 class OmnipayController extends Controller
 {
-
-    private $gateway;
-
-    public function __construct(){
-        $this->gateway = resolve('omnipay');
-        if (config('omnipay.sandbox')) {
-            $this->gateway->sandbox();
-        }
-    }
     public function pay($service)
     {
-        $this->gateway->gateway($service);
+        $gateway = resolve('omnipay')->gateway($service);
+        switch ($service) {
+          case 'alipay':
+            $response = $this->alipay($gateway);
+            break;
+          case 'wechat':
+            $response = $this->wechat($gateway);
+            break;
+          case 'unionpay':
+            $response = $this->unionpay($gateway);
+            break;
+        }
+        $response->redirect();
+    }
+    /**
+     * [alipay 支付宝购买]
+     * @param  [type] $gateway [description]
+     * @return [type]          [description]
+     */
+    protected function alipay($gateway)
+    {
+        if (config('omnipay.debug')) {
+          $gateway->sandbox();
+        }
         $order = [
           'out_trade_no' => date('YmdHis') . mt_rand(1000,9999),
           'subject' => 'Alipay Test',
           'total_amount' => '0.01',
           'product_code' => 'FAST_INSTANT_TRADE_PAY',
         ];
-        $response = $this->gateway->purchase()->setBizContent($order)->send();
-        $response->redirect();
+        return $gateway->purchase()->setBizContent($order)->send();
     }
+    /**
+     * [wechat 微信支付购买]
+     * @param  [type] $gateway [description]
+     * @return [type]          [description]
+     */
+    protected function wechat($gateway)
+    {
+        return '';
+    }
+    /**
+     * [unionpay 银联支付购买]
+     * @param  [type] $gateway [description]
+     * @return [type]          [description]
+     */
+    protected function unionpay($gateway)
+    {
+        $order = [
+            'orderId'   => date('YmdHis'), //Your order ID
+            'txnTime'   => date('YmdHis'), //Should be format 'YmdHis'
+            'orderDesc' => 'My order title', //Order Title
+            'txnAmt'    => '100', //Order Total Fee
+        ];
+        return $gateway->purchase($order)->send();
+    }
+
     public function callback($service, Request $request)
     {
-        $this->gateway->gateway($service);
-        $options = [
-            'params' => $request->all()
-        ];
-
-        $response = $this->gateway->completePurchase($options)->send();
-        dd($response->isSuccessful(),$response->isPaid());
-      $response =get_class_methods($response);
+        $gateway = resolve('omnipay')->gateway($service);
+        switch ($service) {
+          case 'alipay':
+            $options = [
+                'params' => $request->all()
+            ];
+            break;
+          default:
+            $options = [
+                'request_params' => $request->all()
+            ];
+            break;
+        }
+        $response = $gateway->completePurchase($options)->send();
+        dd($response);
+        $response =get_class_methods($response);
         dd($response);
     }
 }
