@@ -27,6 +27,16 @@ return [
         'notifyUrl' => 'http://corecmf.dev/Omnipay/alipay'
       ]
     ],
+		'wechat' => [
+		    'driver' => 'WechatPay',
+		    'options' => [
+		        'appId' => 'wxd18b8356c98591dc',
+		        'mchId' => '10035597',
+		        'apiKey' =>'237a9914f17b3041d60f9eee5406af2c',
+						'tradeType' => 'NATIVE',
+						'notifyUrl' => 'http://corecmf.dev/Omnipay/unionpay'
+		    ]
+		],
 		'unionpay' => [
 		    'driver' => 'UnionPay_Express',
 		    'options' => [

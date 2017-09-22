@@ -21,6 +21,7 @@ class OmnipayController extends Controller
             $response = $this->unionpay($gateway);
             break;
         }
+        dd( $response->getData());
         $response->redirect();
     }
     /**
@@ -48,7 +49,14 @@ class OmnipayController extends Controller
      */
     protected function wechat($gateway)
     {
-        return '';
+        $order = [
+          'body'              => 'The test order',
+          'out_trade_no'      => date('YmdHis').mt_rand(1000, 9999),
+          'total_fee'         => 1, //=0.01
+          'spbill_create_ip'  => '127.0.0.1',
+          'fee_type'          => 'CNY'
+        ];
+        return $gateway->purchase($order)->send();
     }
     /**
      * [unionpay 银联支付购买]
