@@ -9,19 +9,25 @@ class OmnipayController extends Controller
 {
     public function pay($service)
     {
+        $order = [
+            'id' => date('YmdHis') . mt_rand(100000,999999),
+            'name' => '测试订单[驱动:'.$service.']',
+            'fee' => 16.8,
+            'time' => date('YmdHis')
+        ];
         $gateway = resolve('omnipay')->gateway($service);
         switch ($service) {
           case 'alipay':
-            $response = $this->alipay($gateway);
+            $response = $this->alipay($gateway,$order);
             break;
           case 'wechat':
-            $response = $this->wechat($gateway);
+            $response = $this->wechat($gateway,$order);
             break;
           case 'unionpay':
-            $response = $this->unionpay($gateway);
+            $response = $this->unionpay($gateway,$order);
             break;
         }
-        dd( $response->getData());
+        // dd( $response->getData());
         $response->redirect();
     }
     /**
@@ -29,15 +35,15 @@ class OmnipayController extends Controller
      * @param  [type] $gateway [description]
      * @return [type]          [description]
      */
-    protected function alipay($gateway)
+    protected function alipay($gateway,$order)
     {
         if (config('omnipay.debug')) {
           $gateway->sandbox();
         }
         $order = [
-          'out_trade_no' => date('YmdHis') . mt_rand(1000,9999),
-          'subject' => 'Alipay Test',
-          'total_amount' => '0.01',
+          'out_trade_no' => $order['id'],
+          'subject' => $order['name'],
+          'total_amount' => $order['fee'],
           'product_code' => 'FAST_INSTANT_TRADE_PAY',
         ];
         return $gateway->purchase()->setBizContent($order)->send();
@@ -47,12 +53,13 @@ class OmnipayController extends Controller
      * @param  [type] $gateway [description]
      * @return [type]          [description]
      */
-    protected function wechat($gateway)
+    protected function wechat($gateway,$order)
     {
         $order = [
-          'body'              => 'The test order',
-          'out_trade_no'      => date('YmdHis').mt_rand(1000, 9999),
-          'total_fee'         => 1, //=0.01
+          'open_id' => 'oEFAEj2KZxrRp2OijMFccnMrfN3Q',
+          'out_trade_no'      => $order['id'],
+          'body'              => $order['name'],
+          'total_fee'         => $order['fee']*100, //=0.01
           'spbill_create_ip'  => '127.0.0.1',
           'fee_type'          => 'CNY'
         ];
@@ -63,18 +70,37 @@ class OmnipayController extends Controller
      * @param  [type] $gateway [description]
      * @return [type]          [description]
      */
-    protected function unionpay($gateway)
+    protected function unionpay($gateway,$order)
     {
         $order = [
-            'orderId'   => date('YmdHis'), //Your order ID
-            'txnTime'   => date('YmdHis'), //Should be format 'YmdHis'
-            'orderDesc' => 'My order title', //Order Title
-            'txnAmt'    => '100', //Order Total Fee
+            'orderId'   => $order['id'], //Your order ID
+            'txnTime'   => $order['time'], //Should be format 'YmdHis'
+            'orderDesc' => $order['name'], //Order Title
+            'txnAmt'    => $order['fee']*100, //Order Total Fee
         ];
         return $gateway->purchase($order)->send();
     }
-
+    /**
+     * [callback 回调处理]
+     * @param  [type]   $service [description]
+     * @param  Request  $request [description]
+     * @return function          [description]
+     */
     public function callback($service, Request $request)
+    {
+        $this->completePurchase($service, $request);
+    }
+    /**
+     * [notify 异步通知处理]
+     * @param  [type]  $service [description]
+     * @param  Request $request [description]
+     * @return [type]           [description]
+     */
+    public function notify($service, Request $request)
+    {
+        $this->completePurchase($service, $request);
+    }
+    protected function completePurchase($service, $request)
     {
         $gateway = resolve('omnipay')->gateway($service);
         switch ($service) {
