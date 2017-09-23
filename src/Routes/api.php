@@ -20,7 +20,7 @@ Route::group(['prefix' => 'api', 'middleware' => 'api', 'namespace' => 'CoreCMF\
     	// 后台仪表盘路由
 	    Route::group(['prefix' => 'omnipay', 'as' => 'omnipay.'], function () {
 		    Route::post('config',                ['as' => 'config',     'uses' => 'ConfigController@index']);
-        Route::post('order',                ['as' => 'order',     'uses' => 'OrderController@index']);
+        Route::post('order',                 ['as' => 'order',     'uses' => 'OrderController@index']);
 		  });
 
 	 });
