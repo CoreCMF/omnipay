@@ -33,7 +33,7 @@ return [
 		        'appId' => 'wxd18b8356c98591dc',
 		        'mchId' => '10035597',
 		        'apiKey' =>'237a9914f17b3041d60f9eee5406af2c',
-						'tradeType' => 'NATIVE',
+						'tradeType' => 'JSAPI',
 						'notifyUrl' => 'http://corecmf.dev/Omnipay/unionpay'
 		    ]
 		],

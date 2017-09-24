@@ -15,6 +15,7 @@ class OmnipayConfigsTable extends Migration
     {
         Schema::create('omnipay_configs', function (Blueprint $table) {
             $table->increments('id')->unsigned();
+            $table->string('gateway',30)        ->comment('网关');
             $table->string('driver',30)         ->comment('驱动');
             $table->string('appId',60)          ->comment('AppId') ->nullable();
             $table->string('sellerID',80)       ->comment('商家ID')->nullable();

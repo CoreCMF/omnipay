@@ -19,5 +19,5 @@ Route::group(['prefix' => 'Omnipay', 'middleware' => 'web', 'namespace' => 'Core
     Route::get('{service}',                 [ 'as' => 'pay', 'uses' => 'OmnipayController@pay']);
     Route::get('{service}/callback',        [ 'as' => 'callback', 'uses' => 'OmnipayController@callback']);
     Route::post('{service}/callback',       [ 'as' => 'callback', 'uses' => 'OmnipayController@callback']);
-    Route::post('{service}/notify',         [ 'as' => 'callback', 'uses' => 'OmnipayController@notify']);
+    Route::post('{service}/notify',         [ 'as' => 'notify', 'uses' => 'OmnipayController@notify']);
 });
