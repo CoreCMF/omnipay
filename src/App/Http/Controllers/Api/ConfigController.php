@@ -40,6 +40,12 @@ class ConfigController extends Controller
                     ->item(['name' => 'public_key','type' => 'text',     'label' => 'public_key',    'placeholder' => '微信公钥'])
                     ->item(['name' => 'private_key','type' => 'text',    'label' => 'private_key',    'placeholder' => '微信密钥']);
             break;
+          case 'unionpay':
+            return $this->builderForm->item(['name' => 'app_id', 'type' => 'text',    'label' => 'merId',          'placeholder' => '商户号(merId)'])
+                    ->item(['name' => 'private_key','type' => 'text',    'label' => 'certPath',    'placeholder' => '商户私钥证书(certPath)'])
+                    ->item(['name' => 'other',     'type' => 'text',     'label' => 'certPassword','placeholder' => '商户私钥证书密码(certPassword)'])
+                    ->item(['name' => 'public_key','type' => 'text',     'label' => 'certDir',    'placeholder' => '银联公钥证书(certDir)']);
+            break;
         }
     }
     /**
