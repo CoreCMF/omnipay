@@ -7,16 +7,16 @@ use App\Http\Controllers\Controller;
 
 class OmnipayController extends Controller
 {
-    public function pay($service)
+    public function pay($gatewayNmae)
     {
         $order = [
             'id' => date('YmdHis') . mt_rand(100000,999999),
-            'name' => '测试订单[驱动:'.$service.']',
+            'name' => '测试订单[驱动:'.$gatewayNmae.']',
             'fee' => 16.8,
             'time' => date('YmdHis')
         ];
-        $gateway = resolve('omnipay')->gateway($service);
-        switch ($service) {
+        $gateway = resolve('omnipay')->gateway($gatewayNmae);
+        switch ($gatewayNmae) {
           case 'alipay':
             $response = $this->alipay($gateway,$order);
             break;
@@ -82,28 +82,28 @@ class OmnipayController extends Controller
     }
     /**
      * [callback 回调处理]
-     * @param  [type]   $service [description]
+     * @param  [type]   $gatewayNmae [description]
      * @param  Request  $request [description]
      * @return function          [description]
      */
-    public function callback($service, Request $request)
+    public function callback($gatewayNmae, Request $request)
     {
-        $this->completePurchase($service, $request);
+        $this->completePurchase($gatewayNmae, $request);
     }
     /**
      * [notify 异步通知处理]
-     * @param  [type]  $service [description]
+     * @param  [type]  $gatewayNmae [description]
      * @param  Request $request [description]
      * @return [type]           [description]
      */
-    public function notify($service, Request $request)
+    public function notify($gatewayNmae, Request $request)
     {
-        $this->completePurchase($service, $request);
+        $this->completePurchase($gatewayNmae, $request);
     }
-    protected function completePurchase($service, $request)
+    protected function completePurchase($gatewayNmae, $request)
     {
-        $gateway = resolve('omnipay')->gateway($service);
-        switch ($service) {
+        $gateway = resolve('omnipay')->gateway($gatewayNmae);
+        switch ($gatewayNmae) {
           case 'alipay':
             $options = [
                 'params' => $request->all()

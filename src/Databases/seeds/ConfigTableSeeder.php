@@ -16,20 +16,20 @@ class ConfigTableSeeder extends Seeder
         DB::table('omnipay_configs')->insert([
           'gateway' => 'alipay',
           'driver' => 'Alipay_AopPage',
-          'returnUrl'=> route('Omnipay.callback',['service' => 'alipay']),
-          'notifyUrl'=> route('Omnipay.notify',['service' => 'alipay']),
+          'return_url'=> route('Omnipay.callback',['gatewayNmae' => 'alipay']),
+          'notify_url'=> route('Omnipay.notify',['gatewayNmae' => 'alipay']),
         ]);
         DB::table('omnipay_configs')->insert([
           'gateway' => 'wechat',
           'driver' => 'WechatPay',
-          'returnUrl'=> route('Omnipay.callback',['service' => 'wechat']),
-          'notifyUrl'=> route('Omnipay.notify',['service' => 'wechat']),
+          'return_url'=> route('Omnipay.callback',['gatewayNmae' => 'wechat']),
+          'notify_url'=> route('Omnipay.notify',['gatewayNmae' => 'wechat']),
         ]);
         DB::table('omnipay_configs')->insert([
           'gateway' => 'unionpay',
           'driver' => 'UnionPay_Express',
-          'returnUrl'=> route('Omnipay.callback',['service' => 'unionpay']),
-          'notifyUrl'=> route('Omnipay.notify',['service' => 'unionpay']),
+          'return_url'=> route('Omnipay.callback',['gatewayNmae' => 'unionpay']),
+          'notify_url'=> route('Omnipay.notify',['gatewayNmae' => 'unionpay']),
         ]);
     }
 }
