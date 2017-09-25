@@ -12,19 +12,18 @@ class ConfigController extends Controller
 
     public function __construct(Config $configPro){
        $this->configModel = $configPro;
-       $this->builderForm = resolve('builderForm');
+       $this->builderForm = resolve('builderForm')->item(['name' => 'status',         'type' => 'switch',   'label' => '开关']);
     }
     public function index(Request $request)
     {
         $gateway = $request->tabIndex? $request->tabIndex: 'alipay';
         $configs = $this->configModel->where('gateway', '=', $gateway)->first();
-        $this->publicDriverForm($gateway);//根据不同网关添加不同 form item
+        $this->publicGatewayForm($gateway);//根据不同网关添加不同 form item
         $this->publicForm();//添加公共form item
-        $this->builderForm->apiUrl('submit',route('api.admin.omnipay.config.update'))
-                  ->itemData($configs);// 增加默认驱动
+        $this->builderForm->apiUrl('submit',route('api.admin.omnipay.config.update'))->itemData($configs);
         return resolve('builderHtml')->title('支付配置')->item($this->builderForm)->response();
     }
-    public function publicDriverForm($gateway)
+    public function publicGatewayForm($gateway)
     {
         switch ($gateway) {
           case 'alipay':
