@@ -17,19 +17,19 @@ class ConfigTableSeeder extends Seeder
           'gateway' => 'alipay',
           'driver' => 'Alipay_AopPage',
           'return_url'=> route('Omnipay.callback',['gatewayNmae' => 'alipay']),
-          'notify_url'=> route('Omnipay.notify',['gatewayNmae' => 'alipay']),
+          'notify_url'=> route('Omnipay.notify',['gatewayNmae' => 'alipay'])
         ]);
         DB::table('omnipay_configs')->insert([
           'gateway' => 'wechat',
           'driver' => 'WechatPay',
           'return_url'=> route('Omnipay.callback',['gatewayNmae' => 'wechat']),
-          'notify_url'=> route('Omnipay.notify',['gatewayNmae' => 'wechat']),
+          'notify_url'=> route('Omnipay.notify',['gatewayNmae' => 'wechat'])
         ]);
         DB::table('omnipay_configs')->insert([
           'gateway' => 'unionpay',
           'driver' => 'UnionPay_Express',
           'return_url'=> route('Omnipay.callback',['gatewayNmae' => 'unionpay']),
-          'notify_url'=> route('Omnipay.notify',['gatewayNmae' => 'unionpay']),
+          'notify_url'=> route('Omnipay.notify',['gatewayNmae' => 'unionpay'])
         ]);
     }
 }

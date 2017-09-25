@@ -23,7 +23,7 @@ class OmnipayConfigsTable extends Migration
             $table->string('notify_url',160)     ->comment('通知URl')->nullable();
             $table->string('private_key',80)     ->comment('密钥文件路径')->nullable();
             $table->string('public_key',80)      ->comment('公钥文件路径')->nullable();
-            $table->string('cert_password',80)   ->comment('银联商家密钥文件密码')->nullable();
+            $table->string('other',160)          ->comment('其他')->nullable();
             $table->boolean('status')            ->comment('开关状态')->default(false);
             $table->timestamps();
         });
