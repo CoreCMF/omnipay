@@ -23,14 +23,37 @@ class ConfigController extends Controller
         $this->builderForm->apiUrl('submit',route('api.admin.omnipay.config.update'))->itemData($configs);
         return resolve('builderHtml')->title('支付配置')->item($this->builderForm)->response();
     }
+    /**
+     * [update 配置更新]
+     * @param  Request $request [description]
+     * @return [type]           [description]
+     */
+    public function update(Request $request)
+    {
+
+    }
+    /**
+     * [file 文件上传]
+     * @param  Request $request [description]
+     * @return [type]           [description]
+     */
+    public function file(Request $request)
+    {
+
+    }
+    /**
+     * [publicGatewayForm 网关公共form]
+     * @param  [type] $gateway [description]
+     * @return [type]          [description]
+     */
     public function publicGatewayForm($gateway)
     {
         switch ($gateway) {
           case 'alipay':
             return $this->builderForm->item(['name' => 'app_id', 'type' => 'text',    'label' => 'appId',          'placeholder' => 'appId'])
-                    ->item(['name' => 'seller_id', 'type' => 'text',     'label' => 'sellerEmail',     'placeholder' => '支付宝商家账号Email'])
-                    ->item(['name' => 'public_key','type' => 'text',     'label' => 'alipayPublicKey',    'placeholder' => '支付宝公钥'])
-                    ->item(['name' => 'private_key','type' => 'text',     'label' => 'privateKey',    'placeholder' => '自己生成的密钥']);
+                    ->item(['name' => 'seller_id',  'type' => 'text',     'label' => 'sellerEmail',     'placeholder' => '支付宝商家账号Email'])
+                    ->item(['name' => 'public_key', 'type' => 'file',     'label' => 'alipayPublicKey',    'placeholder' => '支付宝公钥', 'uploadUrl'=>route('api.admin.omnipay.config.file')])
+                    ->item(['name' => 'private_key','type' => 'file',     'label' => 'privateKey',    'placeholder' => '自己生成的密钥', 'uploadUrl'=>route('api.admin.omnipay.config.file')]);
             break;
           case 'wechat':
             return $this->builderForm->item(['name' => 'app_id', 'type' => 'text',    'label' => 'appId',          'placeholder' => '开发者ID(AppID)'])
