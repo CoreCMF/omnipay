@@ -114,6 +114,6 @@ class ConfigController extends Controller
     public function getFileName($value){
         $upload = new Upload();
         $uploadObject = $upload->getUploadWhereFirst($value);
-        return $uploadObject->name;
+        return ($uploadObject->code == 404 )? null: $uploadObject->name;
     }
 }
