@@ -52,7 +52,7 @@ class ConfigController extends Controller
     public function file(Request $request)
     {
         $imageData = Input::all();
-        $extension = ['cer','pfx'];
+        $extension = ['pem','cer','pfx'];
         config(['filesystems.default' => 'local']);
         $response = $this->uploadModel->fileUpload($imageData,'omnipay/certificates',$extension);
 
@@ -66,7 +66,7 @@ class ConfigController extends Controller
     public function publicGatewayForm($gateway,$configs)
     {
         $upload = [
-            'extension' => ['doc','pfx','cer'],
+            'extension' => ['pem','pfx','cer'],
             'maxSize' => 10*1024,//大小限制10kb
             'type' => 'file',
             'uploadUrl' => route('api.admin.omnipay.config.file'),

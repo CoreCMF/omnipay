@@ -12,4 +12,8 @@ class Config extends Model
 
     protected $fillable = [];
 
+    public function getStatusAttribute($value)
+    {
+        return (boolean)$value;
+    }
 }
