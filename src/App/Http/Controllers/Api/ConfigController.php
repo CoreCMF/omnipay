@@ -73,7 +73,17 @@ class ConfigController extends Controller
         ];
         switch ($gateway) {
           case 'alipay':
-            return $this->builderForm->item(['name' => 'app_id', 'type' => 'text',    'label' => 'appId',          'placeholder' => 'appId'])
+            $driver = [
+                'Alipay_AopPage' => '电脑网站支付 - new',
+                'Alipay_AopApp' => 'APP支付 - new',
+                'Alipay_AopF2F' => '当面付 - new',
+                'Alipay_AopWap' => '手机网站支付 - new',
+                'Alipay_LegacyApp' => 'APP支付',
+                'Alipay_LegacyExpress' => '即时到账',
+                'Alipay_LegacyWap' => '手机网站支付'
+            ];
+            return $this->builderForm->item(['name' => 'driver',         'type' => 'select',   'label' => '默认驱动', 'placeholder' => '驱动','options'=>$driver])
+                    ->item(['name' => 'app_id', 'type' => 'text',    'label' => 'appId',          'placeholder' => 'appId'])
                     ->item(['name' => 'seller_id',  'type' => 'text',     'label' => 'sellerEmail',     'placeholder' => '支付宝商家账号Email'])
                     ->item(array_merge(['name' => 'public_key', 'label' => 'alipayPublicKey',
                         'placeholder' => '支付宝公钥','fileName'=> $this->getFileName($configs->public_key)
@@ -83,24 +93,39 @@ class ConfigController extends Controller
                     ],$upload));
             break;
           case 'wechat':
-            return $this->builderForm->item(['name' => 'app_id', 'type' => 'text',    'label' => 'appId',          'placeholder' => '开发者ID(AppID)'])
+            $driver = [
+                'WechatPay' => '微信支付通用网关',
+                'WechatPay_App' => '微信APP支付网关',
+                'WechatPay_Native' => '微信原生扫码支付支付网关',
+                'WechatPay_Js' => '微信网页、公众号、小程序支付网关',
+                'WechatPay_Pos' => '微信刷卡支付网关',
+                'WechatPay_Mweb' => '微信H5支付网关'
+            ];
+            return $this->builderForm->item(['name' => 'driver',         'type' => 'select',   'label' => '默认驱动', 'placeholder' => '驱动','options'=>$driver])
+                    ->item(['name' => 'app_id', 'type' => 'text',    'label' => 'appId',          'placeholder' => '开发者ID(AppID)'])
                     ->item(['name' => 'seller_id', 'type' => 'text',     'label' => 'mchId',     'placeholder' => '微信商户号'])
                     ->item(['name' => 'other',     'type' => 'text',     'label' => 'AppSecret',     'placeholder' => '开发者密码(AppSecret)'])
-                    ->item(array_merge(['name' => 'public_key','type' => 'file',     'label' => 'publicKey',
-                        'placeholder' => '微信公钥','fileName'=> $this->getFileName($configs->private_key)
+                    ->item(array_merge(['name' => 'public_key','type' => 'file',     'label' => 'apiclientCert.',
+                        'placeholder' => '微信公钥','fileName'=> $this->getFileName($configs->public_key)
                     ],$upload))
-                    ->item(array_merge(['name' => 'private_key','type' => 'file',    'label' => 'privateKey',
+                    ->item(array_merge(['name' => 'private_key','type' => 'file',    'label' => 'apiclientKey',
                         'placeholder' => '微信密钥','fileName'=> $this->getFileName($configs->private_key)
                     ],$upload));
             break;
           case 'unionpay':
-            return $this->builderForm->item(['name' => 'app_id', 'type' => 'text',    'label' => 'merId',          'placeholder' => '商户号(merId)'])
+            $driver = [
+                'UnionPay_Express' => '银联全产品网关（PC，APP，WAP支付）',
+                'UnionPay_LegacyMobile' => '银联老网关（APP）',
+                'UnionPay_LegacyQuickPay' => '银联老网关（PC)'
+            ];
+            return $this->builderForm->item(['name' => 'driver',         'type' => 'select',   'label' => '默认驱动', 'placeholder' => '驱动','options'=>$driver])
+                    ->item(['name' => 'app_id', 'type' => 'text',    'label' => 'merId',          'placeholder' => '商户号(merId)'])
                     ->item(array_merge(['name' => 'private_key','type' => 'file',    'label' => 'certPath',
                           'placeholder' => '商户私钥证书(certPath)','fileName'=> $this->getFileName($configs->private_key)
                     ],$upload))
                     ->item(['name' => 'other',     'type' => 'text',     'label' => 'certPassword','placeholder' => '商户私钥证书密码(certPassword)'])
                     ->item(array_merge(['name' => 'public_key','type' => 'file',     'label' => 'certDir',
-                          'placeholder' => '银联公钥证书(certDir)','fileName'=> $this->getFileName($configs->private_key)
+                          'placeholder' => '银联公钥证书(certDir)','fileName'=> $this->getFileName($configs->public_key)
                     ],$upload));
             break;
         }
@@ -113,7 +138,6 @@ class ConfigController extends Controller
     {
         $tabs = ['alipay'=>'支付宝','wechat'=>'微信支付','unionpay'=>'银联支付'];
         $this->builderForm->tabs($tabs)
-                  ->item(['name' => 'driver',         'type' => 'text',     'label' => 'driver'])
                   ->item(['name' => 'return_url',     'type' => 'text',     'label' => '回调地址','disabled'=>true])
                   ->item(['name' => 'notify_url',     'type' => 'text',     'label' => '通知地址','disabled'=>true])
                   ->config('labelWidth','120px')
