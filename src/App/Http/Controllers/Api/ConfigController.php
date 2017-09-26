@@ -22,6 +22,7 @@ class ConfigController extends Controller
     {
         $gateway = $request->tabIndex? $request->tabIndex: 'alipay';
         $configs = $this->configModel->where('gateway', '=', $gateway)->first();
+        $this->builderForm->item(['name' => 'gateway', 'type' => 'hidden']);
         $this->publicGatewayForm($gateway,$configs);//根据不同网关添加不同 form item
         $this->publicForm();//添加公共form item
         $this->builderForm->apiUrl('submit',route('api.admin.omnipay.config.update'))->itemData($configs);
@@ -34,7 +35,14 @@ class ConfigController extends Controller
      */
     public function update(Request $request)
     {
-
+        if ($this->configModel->where('gateway', '=', $request->gateway)->update($request->all())) {
+          $message = [
+                      'title'     => '保存成功',
+                      'message'   => '系统设置保存成功!',
+                      'type'      => 'success',
+                  ];
+        }
+        return resolve('builderHtml')->message($message)->response();
     }
     /**
      * [file 文件上传]
