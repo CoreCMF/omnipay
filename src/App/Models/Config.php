@@ -34,8 +34,8 @@ class Config extends Model
     {
         $this->where('status', true)->get()->map(function ($item) {
           $upload = new Upload();
-          $private_key = storage_path($upload->getUploadWhereFirst($item->private_key)->path);
-          $public_key = storage_path($upload->getUploadWhereFirst($item->public_key)->path);
+          $private_key = storage_path('app/'.$upload->getUploadWhereFirst($item->private_key)->path);
+          $public_key = storage_path('app/'.$upload->getUploadWhereFirst($item->public_key)->path);
           switch ($item->gateway) {
             case 'unionpay':
               config(['laravel-omnipay.gateways.'.$item->gateway.'.driver' => $item->driver]);
@@ -43,14 +43,15 @@ class Config extends Model
                     'merId' => $item->app_id,
               		  'certPath' => $private_key,
               		  'certPassword' => $item->other,
-              		  'certDir'=> $public_key,
+                    'certDir'=> storage_path('app/certificates/unionpay'),
+              		  'certDir'=> substr($public_key,0,strripos($public_key,'/')), //这里需要目录
               		  'returnUrl' => $item->return_url,
               		  'notifyUrl' => $item->notify_url
                 ]]);
             break;
           }
         });
-        dd(config('laravel-omnipay.gateways'));
+        // dd(config('laravel-omnipay.gateways'));
         /**
          * [加载云磁盘配置]
          * @var [type]
