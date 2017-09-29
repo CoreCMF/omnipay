@@ -9,6 +9,6 @@ class Order extends Model
 {
     public $table = 'omnipay_orders';
 
-    protected $fillable = [];
-    
+    protected $fillable = ['order_id','name','fee','gateway'];
+
 }
