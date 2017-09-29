@@ -5,6 +5,7 @@ namespace CoreCMF\Omnipay;
 use Omnipay;
 use DB;
 use Illuminate\Support\ServiceProvider;
+use CoreCMF\Omnipay\App\Models\Config;
 
 class OmnipayServiceProvider extends ServiceProvider
 {
@@ -47,6 +48,9 @@ class OmnipayServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__.'/Config/menu.php', 'omnipay-menu');//菜单
         $this->mergeConfigFrom(__DIR__.'/Config/route.php', 'omnipay-route');//前端路由
         $this->mergeConfigFrom(__DIR__.'/Config/laravel-omnipay.php', 'laravel-omnipay');
+        
+        $config = new Config();
+        $config->configRegister();//注册配置信息
         //注册providers服务
         $this->registerProviders();
     }
