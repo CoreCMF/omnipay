@@ -61,7 +61,7 @@ class OmnipayController extends Controller
           'body'              => $order['name'],
           'total_fee'         => $order['fee']*100, //=0.01
           'spbill_create_ip'  => '127.0.0.1',
-          'fee_type'          => 'CNY'
+          'fee_type'          => 'CNY',
         ];
         return $gateway->purchase($order)->send();
     }

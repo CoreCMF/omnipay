@@ -107,7 +107,7 @@ class ConfigController extends Controller
                     ->item(['name' => 'app_id', 'type' => 'text',    'label' => 'appId',          'placeholder' => '开发者ID(AppID)'])
                     ->item(['name' => 'seller_id', 'type' => 'text',     'label' => 'mchId',     'placeholder' => '微信商户号'])
                     ->item(['name' => 'other',     'type' => 'text',     'label' => 'AppSecret',     'placeholder' => '开发者密码(AppSecret)'])
-                    ->item(array_merge(['name' => 'public_key','type' => 'file',     'label' => 'apiclientCert.',
+                    ->item(array_merge(['name' => 'public_key','type' => 'file',     'label' => 'apiclientCert',
                         'placeholder' => '微信公钥','fileName'=> $this->getFileName($configs->public_key)
                     ],$upload))
                     ->item(array_merge(['name' => 'private_key','type' => 'file',    'label' => 'apiclientKey',
