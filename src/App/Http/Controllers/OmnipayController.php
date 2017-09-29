@@ -2,33 +2,43 @@
 
 namespace CoreCMF\Omnipay\App\Http\Controllers;
 
+use Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use CoreCMF\Omnipay\App\Models\Order;
 
 class OmnipayController extends Controller
 {
+    private $orderModel;
+
+    public function __construct(Order $orderPro){
+       $this->orderModel = $orderPro;
+    }
     public function pay($gatewayNmae)
     {
-        $order = [
-            'id' => date('YmdHis') . mt_rand(100000,999999),
-            'name' => '测试订单[驱动:'.$gatewayNmae.']',
-            'fee' => 16.8,
-            'time' => date('YmdHis')
-        ];
+        // $createOrder = [
+        //     'order_id'      => '20170929090814572607',
+        //     'uid'     => Auth::id(),
+        //     'name'    => '测试订单[驱动:'.$gatewayNmae.']',
+        //     'fee'     => 16.8,
+        //     'gateway' => $gatewayNmae
+        // ];
+        // $order = $this->orderModel->create($createOrder);//订单写入数据库
+
+        $order_id = '20170929090814572607';
+        $order = $this->orderModel->where('order_id', $order_id)->first();
         $gateway = resolve('omnipay')->gateway($gatewayNmae);
         switch ($gatewayNmae) {
           case 'alipay':
-            $response = $this->alipay($gateway,$order);
+            $this->alipay($gateway,$order);
             break;
           case 'wechat':
-            $response = $this->wechat($gateway,$order);
+            $this->wechat($gateway,$order);
             break;
           case 'unionpay':
-            $response = $this->unionpay($gateway,$order);
+            $this->unionpay($gateway,$order);
             break;
         }
-        // dd( $response->getData());
-        $response->redirect();
     }
     /**
      * [alipay 支付宝购买]
@@ -41,12 +51,13 @@ class OmnipayController extends Controller
           $gateway->sandbox();
         }
         $order = [
-          'out_trade_no' => $order['id'],
-          'subject' => $order['name'],
-          'total_amount' => $order['fee'],
+          'out_trade_no' => $order->order_id,
+          'subject' => $order->name,
+          'total_amount' => $order->fee,
           'product_code' => 'FAST_INSTANT_TRADE_PAY',
         ];
-        return $gateway->purchase()->setBizContent($order)->send();
+        $response = $gateway->purchase()->setBizContent($order)->send();
+        $response->redirect();
     }
     /**
      * [wechat 微信支付购买]
@@ -57,13 +68,14 @@ class OmnipayController extends Controller
     {
         $order = [
           'open_id' => 'oEFAEj2KZxrRp2OijMFccnMrfN3Q',
-          'out_trade_no'      => $order['id'],
-          'body'              => $order['name'],
-          'total_fee'         => $order['fee']*100, //=0.01
+          'out_trade_no'      => $order->order_id,
+          'body'              => $order->name,
+          'total_fee'         => $order->fee*100, //=0.01
           'spbill_create_ip'  => '127.0.0.1',
           'fee_type'          => 'CNY',
         ];
-        return $gateway->purchase($order)->send();
+        $response = $gateway->purchase($order)->send();
+        dd( $response->getData());
     }
     /**
      * [unionpay 银联支付购买]
@@ -73,12 +85,13 @@ class OmnipayController extends Controller
     protected function unionpay($gateway,$order)
     {
         $order = [
-            'orderId'   => $order['id'], //Your order ID
-            'txnTime'   => $order['time'], //Should be format 'YmdHis'
-            'orderDesc' => $order['name'], //Order Title
-            'txnAmt'    => $order['fee']*100, //Order Total Fee
+            'orderId'   => $order->order_id, //Your order ID
+            'txnTime'   => date('YmdHis',strtotime($order->created_at)), //Should be format 'YmdHis'
+            'orderDesc' => $order->name, //Order Title
+            'txnAmt'    => $order->fee*100, //Order Total Fee
         ];
-        return $gateway->purchase($order)->send();
+        $response = $gateway->purchase($order)->send();
+        $response->redirect();
     }
     /**
      * [callback 回调处理]
