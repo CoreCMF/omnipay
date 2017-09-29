@@ -85,6 +85,7 @@ class ConfigController extends Controller
             return $this->builderForm->item(['name' => 'driver',         'type' => 'select',   'label' => '默认驱动', 'placeholder' => '驱动','options'=>$driver])
                     ->item(['name' => 'app_id', 'type' => 'text',    'label' => 'appId',          'placeholder' => 'appId'])
                     ->item(['name' => 'seller_id',  'type' => 'text',     'label' => 'sellerEmail',     'placeholder' => '支付宝商家账号Email'])
+                    ->item(['name' => 'other',         'type' => 'select',   'label' => '加密方式', 'placeholder' => '加密方式','options'=> ['RSA2','RSA','MD5']])
                     ->item(array_merge(['name' => 'public_key', 'label' => 'alipayPublicKey',
                         'placeholder' => '支付宝公钥','fileName'=> $this->getFileName($configs->public_key)
                     ],$upload))

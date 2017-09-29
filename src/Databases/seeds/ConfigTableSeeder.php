@@ -16,6 +16,7 @@ class ConfigTableSeeder extends Seeder
         DB::table('omnipay_configs')->insert([
           'gateway' => 'alipay',
           'driver' => 'Alipay_AopPage',
+          'other' => 'RSA2',
           'return_url'=> route('Omnipay.callback',['gatewayNmae' => 'alipay']),
           'notify_url'=> route('Omnipay.notify',['gatewayNmae' => 'alipay'])
         ]);
