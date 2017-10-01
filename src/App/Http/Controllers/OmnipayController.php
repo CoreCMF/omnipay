@@ -18,9 +18,10 @@ class OmnipayController extends Controller
     }
     public function pay($gatewayNmae)
     {
+        $uid = Auth::id()? Auth::id():0;
         $createOrder = [
             'order_id'      => date('YmdHis') . mt_rand(100000,999999),
-            'uid'     => Auth::id(),
+            'uid'     => $uid,
             'name'    => '测试订单[驱动:'.$gatewayNmae.']',
             'fee'     => 16.8,
             'gateway' => $gatewayNmae
