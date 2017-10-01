@@ -78,7 +78,12 @@ class OmnipayController extends Controller
           'fee_type'          => 'CNY',
         ];
         $response = $gateway->purchase($order)->send();
-        dd( $response->getData());
+        $data = [
+          'appOrder' => $response->getAppOrderData(),
+          'jsOrder' => $response->getJsOrderData(),
+          'webOrder' => $response->getCodeUrl(),
+        ];
+        dd($data);
     }
     /**
      * [unionpay 银联支付购买]
@@ -144,11 +149,12 @@ class OmnipayController extends Controller
                 ];
                 break;
               case 'wechat':
-                $order = [
-                    'order_id'  => $data['out_trade_no'],
-                    'fee'       => $data['total_amount'],
-                    'query_id'  => $data['trade_no'],
-                ];
+                // $order = [
+                //     'order_id'  => $data['out_trade_no'],
+                //     'fee'       => $data['total_amount'],
+                //     'query_id'  => $data['trade_no'],
+                // ];
+                $order = json_encode($data);
                 break;
               case 'unionpay':
                 $order = [

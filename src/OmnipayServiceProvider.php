@@ -2,6 +2,7 @@
 
 namespace CoreCMF\Omnipay;
 
+use Route;
 use Illuminate\Support\ServiceProvider;
 use CoreCMF\Omnipay\App\Models\Config;
 
@@ -31,6 +32,7 @@ class OmnipayServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->middleware();
         $this->initService();
     }
     /**
@@ -61,5 +63,16 @@ class OmnipayServiceProvider extends ServiceProvider
         foreach ($providers as $provider) {
             $this->app->register($provider);
         }
+    }
+    //注册webOmnipay中间件
+    public function middleware()
+    {
+        Route::pushMiddlewareToGroup('webOmnipay', \App\Http\Middleware\EncryptCookies::class);
+        Route::pushMiddlewareToGroup('webOmnipay', \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class);
+        // Route::pushMiddlewareToGroup('webOmnipay', \Illuminate\Session\Middleware\AuthenticateSession::class);
+        Route::pushMiddlewareToGroup('webOmnipay', \Illuminate\Session\Middleware\StartSession::class);
+        Route::pushMiddlewareToGroup('webOmnipay', \Illuminate\View\Middleware\ShareErrorsFromSession::class);
+        Route::pushMiddlewareToGroup('webOmnipay', \Illuminate\Routing\Middleware\SubstituteBindings::class);
+        Route::pushMiddlewareToGroup('webOmnipay', \CoreCMF\Omnipay\App\Http\Middleware\VerifyCsrfToken::class);
     }
 }
