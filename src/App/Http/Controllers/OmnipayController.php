@@ -18,17 +18,17 @@ class OmnipayController extends Controller
     }
     public function pay($gatewayNmae)
     {
-        // $createOrder = [
-        //     'order_id'      => '20170929090814572607',
-        //     'uid'     => Auth::id(),
-        //     'name'    => '测试订单[驱动:'.$gatewayNmae.']',
-        //     'fee'     => 16.8,
-        //     'gateway' => $gatewayNmae
-        // ];
-        // $order = $this->orderModel->create($createOrder);//订单写入数据库
+        $createOrder = [
+            'order_id'      => date('YmdHis') . mt_rand(100000,999999),
+            'uid'     => Auth::id(),
+            'name'    => '测试订单[驱动:'.$gatewayNmae.']',
+            'fee'     => 16.8,
+            'gateway' => $gatewayNmae
+        ];
+        $order = $this->orderModel->create($createOrder);//订单写入数据库
 
-        $orderId = '20170929090814572608';
-        $order = $this->orderModel->getOrder($orderId);
+        // $orderId = '20170929090814572609';
+        // $order = $this->orderModel->getOrder($orderId);
         $gateway = resolve('omnipay')->gateway($gatewayNmae);
         switch ($gatewayNmae) {
           case 'alipay':
@@ -102,7 +102,9 @@ class OmnipayController extends Controller
      */
     public function callback($gatewayNmae)
     {
-        dd($this->completePurchase($gatewayNmae));
+        if ($this->completePurchase($gatewayNmae)) {
+          return '支付成功';
+        }
     }
     /**
      * [notify 异步通知处理]
@@ -111,7 +113,11 @@ class OmnipayController extends Controller
      */
     public function notify($gatewayNmae)
     {
-        $this->completePurchase($gatewayNmae);
+        if ($this->completePurchase($gatewayNmae)) {
+            return 'success';
+        }else{
+            return 'fail';
+        }
     }
     /**
      * [completePurchase 处理支付返回数据]
