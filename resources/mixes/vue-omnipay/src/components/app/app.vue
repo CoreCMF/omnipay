@@ -3,12 +3,20 @@
     <div class="omnipay-item">
       <div class="left">
         <div class="logo"><img src="/static/assets/wechat.png"></div>
-        <div class="price">应付金额：<strong><i>￥</i>38.00</strong></div>
-        <div class="order"><p>创建时间：2017-10-02 11:41:16</p></div>
+        <div class="price">应付金额：<strong><i>￥</i>{{ price }}</strong></div>
+        <div class="created_at">
+          <p>订单名称：{{ name }}</p>
+          <p>订单编号：{{ order_id }}</p>
+          <p>创建时间：{{ created_at }}</p>
+        </div>
       </div>
       <div class="right">
         <div class="pic">
-          <img src="https://zsstatus.tuanimg.com/pay/weixin/rq?pay=weixin%3A%2F%2Fwxpay%2Fbizpayurl%3Fpr%3DUm2LVjh">
+          <bve-qrcode-item
+            class="qrcode"
+            v-model="wechatQrcode"
+            :config="wechatQrcodeConfig"
+          />
         </div>
         <div class="fb"><i></i>请使用微信扫描<br>二维码以完成支付</div>
       </div>
@@ -21,6 +29,37 @@ export default {
   name: 'app',
   created () {
     console.log(window.config)
+  },
+  data () {
+    return {
+      wechatQrcodeConfig: {
+        size: 260
+      }
+    }
+  },
+  computed: {
+    gateway () {
+      return window.config.data.order.gateway
+    },
+    price () {
+      return window.config.data.order.fee.toFixed(2)
+    },
+    created_at () {
+      return window.config.data.order.created_at
+    },
+    order_id () {
+      return window.config.data.order.order_id
+    },
+    name () {
+      return window.config.data.order.name
+    },
+    /**
+     * [wechatQrcode 微信支付pc二维码]
+     * @return {[type]} [description]
+     */
+    wechatQrcode () {
+      return window.config.data.wechat.webOrder
+    }
   }
 }
 </script>
@@ -62,7 +101,7 @@ body{
         }
       }
     }
-    >.order{
+    >.created_at{
       padding: 10px 0;
       border-top:1px solid #e5e5e5;
       border-bottom:1px solid #e5e5e5;
@@ -75,15 +114,15 @@ body{
   >.right{
     width: 55%;
     padding: 5% 5% 5% 5%;
+    display: flex;
+    display: -webkit-flex; /* Safari */
+    flex-direction: column;
+    align-items: center;
     >.pic{
-      width: 267px;
-      height: 267px;
+      width: 260px;
+      height: 260px;
       background: url("/static/assets/loading.gif") center center no-repeat;
-      >img{
-        width: 267px;
-        height: 267px;
-        border:1px solid #e7e7e7;
-      }
+      border:1px solid #e7e7e7;
     }
     >.fb{
       padding:10px;

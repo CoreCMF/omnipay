@@ -70,7 +70,7 @@ class OmnipayController extends Controller
      */
     protected function wechat($gateway,$order)
     {
-        $order = [
+        $wechatOrder = [
           'open_id' => 'oEFAEj2KZxrRp2OijMFccnMrfN3Q',
           'out_trade_no'      => $order->order_id,
           'body'              => $order->name,
@@ -78,13 +78,13 @@ class OmnipayController extends Controller
           'spbill_create_ip'  => '127.0.0.1',
           'fee_type'          => 'CNY',
         ];
-        $response = $gateway->purchase($order)->send();
+        $response = $gateway->purchase($wechatOrder)->send();
         $wechat = [
           'appOrder' => $response->getAppOrderData(),
           'jsOrder' => $response->getJsOrderData(),
           'webOrder' => $response->getCodeUrl(),
         ];
-        return view('core::index',[ 'model' => 'omnipay', 'data' => json_encode(['wechat' => $wechat]) ]);
+        return view('core::index',[ 'model' => 'omnipay', 'data' => json_encode(['wechat' => $wechat, 'order' => $order]) ]);
     }
     /**
      * [unionpay 银联支付购买]
