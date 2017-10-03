@@ -33,15 +33,16 @@ class OmnipayController extends Controller
         $gateway = resolve('omnipay')->gateway($gatewayNmae);
         switch ($gatewayNmae) {
           case 'alipay':
-            $this->alipay($gateway,$order);
+            $response = $this->alipay($gateway,$order);
             break;
           case 'wechat':
-            $this->wechat($gateway,$order);
+            $response = $this->wechat($gateway,$order);
             break;
           case 'unionpay':
-            $this->unionpay($gateway,$order);
+            $response = $this->unionpay($gateway,$order);
             break;
         }
+        return $response;
     }
     /**
      * [alipay 支付宝购买]
@@ -78,12 +79,12 @@ class OmnipayController extends Controller
           'fee_type'          => 'CNY',
         ];
         $response = $gateway->purchase($order)->send();
-        $data = [
+        $wechat = [
           'appOrder' => $response->getAppOrderData(),
           'jsOrder' => $response->getJsOrderData(),
           'webOrder' => $response->getCodeUrl(),
         ];
-        dd($data);
+        return view('core::index',[ 'model' => 'omnipay', 'data' => json_encode(['wechat' => $wechat]) ]);
     }
     /**
      * [unionpay 银联支付购买]
