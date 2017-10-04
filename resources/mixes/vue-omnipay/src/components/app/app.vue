@@ -42,7 +42,7 @@ export default {
       return window.config.data.order.gateway
     },
     price () {
-      return window.config.data.order.fee.toFixed(2)
+      return window.config.data.order.fee
     },
     created_at () {
       return window.config.data.order.created_at
@@ -81,12 +81,14 @@ body{
   display: flex;
   display: -webkit-flex; /* Safari */
   margin-top: 6.18%;
-  width: 680px;
+  width: 80%;
+  max-width: 680px;
   border-radius:4px;
   background-color: #fff;
   padding: 2%;
+  flex-wrap: wrap;
   >.left{
-    width: 45%;
+    width: 270px;
     padding: 5% 5% 5% 5%;
     >.logo{
       padding-bottom: 5%;
@@ -112,7 +114,7 @@ body{
     }
   }
   >.right{
-    width: 55%;
+    width: 270px;
     padding: 5% 5% 5% 5%;
     display: flex;
     display: -webkit-flex; /* Safari */

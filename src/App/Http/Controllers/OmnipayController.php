@@ -18,18 +18,18 @@ class OmnipayController extends Controller
     }
     public function pay($gatewayNmae)
     {
-        $uid = Auth::id()? Auth::id():0;
-        $createOrder = [
-            'order_id'      => date('YmdHis') . mt_rand(100000,999999),
-            'uid'     => $uid,
-            'name'    => '测试订单[驱动:'.$gatewayNmae.']',
-            'fee'     => 16.8,
-            'gateway' => $gatewayNmae
-        ];
-        $order = $this->orderModel->create($createOrder);//订单写入数据库
+        // $uid = Auth::id()? Auth::id():0;
+        // $createOrder = [
+        //     'order_id'      => date('YmdHis') . mt_rand(100000,999999),
+        //     'uid'     => $uid,
+        //     'name'    => '测试订单[驱动:'.$gatewayNmae.']',
+        //     'fee'     => 16.8,
+        //     'gateway' => $gatewayNmae
+        // ];
+        // $order = $this->orderModel->create($createOrder);//订单写入数据库
 
-        // $orderId = '20170929090814572609';
-        // $order = $this->orderModel->getOrder($orderId);
+        $orderId = '20171003071536577290';
+        $order = $this->orderModel->getOrder($orderId);
         $gateway = resolve('omnipay')->gateway($gatewayNmae);
         switch ($gatewayNmae) {
           case 'alipay':
