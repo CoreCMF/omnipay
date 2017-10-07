@@ -5,20 +5,23 @@ import Echo from 'laravel-echo'
 import Pusher from 'pusher-js'
 import BuilderVueElement from 'builder-vue-element'
 Vue.use(BuilderVueElement)
+window.Laravel = {
+  csrfToken: window.config.csrfToken
+}
 window.Pusher = Pusher
-window.Echo = new Echo({
-  host: 'corecmf.dev',
-  broadcaster: 'pusher',
-  key: '22317447f90c25aef80ce73cca5648fe'
-  encrypted: true
+window.echo = new Echo({
+  broadcaster: 'socket.io',
+  host: 'http://corecmf.dev:6001'
+  // broadcaster: 'pusher',
+  // key: '059ed477866087f99056b595fbd80c80',
 })
-window.Echo.private('App.User.1').listen('order.status.updated', (e) => {
-  console.log('dazles01')
-  console.log(e)
-}).listen('OrderStatusUpdated', (e) => {
+console.log(window.echo.private('App.User.1'))
+window.echo.private('App.User.1')
+.listen('.CoreCMF\\Omnipay\\App\\Events\\OrderStatusUpdated', (e) => {
   console.log('dazles02')
   console.log(e)
 })
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

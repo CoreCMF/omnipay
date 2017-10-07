@@ -2,6 +2,7 @@
 
 namespace CoreCMF\Omnipay;
 
+use Redis;
 use Route;
 use Illuminate\Support\ServiceProvider;
 use CoreCMF\Omnipay\App\Models\Config;

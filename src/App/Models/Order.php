@@ -21,7 +21,6 @@ class Order extends Model
      */
     public function getOrder($orderId)
     {
-        event(new OrderStatusUpdated($this)); //支付完成事件
         return $this->where('order_id', $orderId)->first();
     }
     /**
