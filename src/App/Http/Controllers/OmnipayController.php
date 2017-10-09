@@ -84,7 +84,12 @@ class OmnipayController extends Controller
           'jsOrder' => $response->getJsOrderData(),
           'webOrder' => $response->getCodeUrl(),
         ];
-        return view('core::index',[ 'model' => 'omnipay', 'data' => json_encode(['wechat' => $wechat, 'order' => $order]) ]);
+
+        $builderAsset = resolve('builderAsset');
+        $builderAsset->config('wechat',$wechat);
+        $builderAsset->config('order',$order);
+        view()->share('resources', $builderAsset->response());//视图共享数据
+        return view('core::index',[ 'model' => 'omnipay']);
     }
     /**
      * [unionpay 银联支付购买]

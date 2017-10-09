@@ -7,11 +7,17 @@ import Pusher from 'pusher-js'
 import BuilderVueElement from 'builder-vue-element'
 Vue.use(BuilderVueElement)
 
-window.Echo = Echo
 window.Pusher = Pusher
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
+  created () {
+    let options = {
+      broadcaster: 'socket.io',
+      host: 'dashboard.spatie.be:6001'
+    }
+    this.echo = new Echo(options)
+  },
   render: h => h(App)
 })

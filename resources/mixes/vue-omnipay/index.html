@@ -8,8 +8,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script>
     window.config = {
-      apiUrl: 'http://corecmf.dev/api/omnipay/main',
-      data:{"wechat":{"appOrder":{"appid":"wxd18b8356c98591dc","partnerid":"10035597","prepayid":"wx20171003110733c20650cf6f0915936445","package":"Sign=WXPay","noncestr":"52e7873269ac678ea9f8c56ded7d493d","timestamp":1507000139,"sign":"A09455F6674D6022BBCA7EA74BA0B39E"},"jsOrder":{"appId":"wxd18b8356c98591dc","package":"prepay_id=wx20171003110733c20650cf6f0915936445","nonceStr":"461df0e5157622b2f3ea96d643701139","timeStamp":"1507000139","signType":"MD5","paySign":"7A37FEEB4DC1CF593878CD120E2EF4CC"},"webOrder":"weixin:\/\/wxpay\/bizpayurl?pr=woVPPxd"},"order":{"order_id":"20171003030858637674","uid":0,"name":"\u6d4b\u8bd5\u8ba2\u5355[\u9a71\u52a8:wechat]","fee":16.8,"gateway":"wechat","updated_at":"2017-10-03 03:08:58","created_at":"2017-10-03 03:08:59","id":73}},
+        apiUrl: '/api/omnipay/main',
+        csrfToken:'ae7C441aCFK6p7LgW2p8E8E4srJhJAVCM588wLFU',
+        userId: 1,
+        data:{"wechat":{"appOrder":{"appid":"wxd18b8356c98591dc","partnerid":"10035597","prepayid":"wx201710091427089ed22b05310925799433","package":"Sign=WXPay","noncestr":"abe67d6da190ede522236f5e881db809","timestamp":1507530523,"sign":"8688DF657E2A0FB1F3B240AEA4F53B0C"},"jsOrder":{"appId":"wxd18b8356c98591dc","package":"prepay_id=wx201710091427089ed22b05310925799433","nonceStr":"9f8ef00d52873d0c143a858b37afefda","timeStamp":"1507530523","signType":"MD5","paySign":"0BF9DF619D49AFE3ABF611933E5AF025"},"webOrder":"weixin:\/\/wxpay\/bizpayurl?pr=Nr96Tiy"},"order":{"id":1,"order_id":"20171007065552327701","uid":1,"name":"\u6d4b\u8bd5\u8ba2\u5355[\u9a71\u52a8:wechat]","fee":"16.80","gateway":"wechat","query_id":null,"status":"unpaid","created_at":"2017-10-07 06:55:52","updated_at":"2017-10-07 06:55:52"}},
     }
   </script>
   <script src="//localhost:6001/socket.io/socket.io.js"></script>

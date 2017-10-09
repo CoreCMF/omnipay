@@ -28,7 +28,7 @@
 export default {
   name: 'app',
   created () {
-    console.log(window.config)
+
   },
   data () {
     return {

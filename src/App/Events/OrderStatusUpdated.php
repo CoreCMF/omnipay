@@ -12,7 +12,7 @@ class OrderStatusUpdated implements ShouldBroadcast
 
     // protected $orderModel;
     public $order;
-    public $user;
+    private $user;
 
     /**
      * 创建一个新的事件实例.
@@ -22,8 +22,8 @@ class OrderStatusUpdated implements ShouldBroadcast
      */
     public function __construct($user,$order)
     {
-        $this->user = '$user';
-        $this->order = '$order';
+        $this->user = $user;
+        $this->order = $order;
     }
     public function broadcastOn()
     {

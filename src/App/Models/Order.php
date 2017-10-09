@@ -22,7 +22,7 @@ class Order extends Model
      */
     public function getOrder($orderId)
     {
-        event(new OrderStatusUpdated(Auth::user(),$this)); //支付完成事件
+        event(new OrderStatusUpdated(Auth::user(),$this->get())); //支付完成事件
         return $this->where('order_id', $orderId)->first();
     }
     /**
