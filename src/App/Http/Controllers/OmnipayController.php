@@ -28,7 +28,7 @@ class OmnipayController extends Controller
         // ];
         // $order = $this->orderModel->create($createOrder);//订单写入数据库
 
-        $orderId = '20171003071536577290';
+        $orderId = '20171007065552327701';
         $order = $this->orderModel->getOrder($orderId);
         $gateway = resolve('omnipay')->gateway($gatewayNmae);
         switch ($gatewayNmae) {

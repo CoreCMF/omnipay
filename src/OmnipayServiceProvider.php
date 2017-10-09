@@ -24,6 +24,9 @@ class OmnipayServiceProvider extends ServiceProvider
         $this->commands($this->commands);
         //迁移文件配置
         $this->loadMigrationsFrom(__DIR__.'/Databases/migrations');
+        $this->publishes([
+            __DIR__.'/../resources/mixes/vue-omnipay/dist/vendor/' => public_path('vendor'),
+        ], 'omnipay');
     }
 
     /**

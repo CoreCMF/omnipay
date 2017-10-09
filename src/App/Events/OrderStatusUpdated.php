@@ -22,8 +22,8 @@ class OrderStatusUpdated implements ShouldBroadcast
      */
     public function __construct($user,$order)
     {
-        $this->user = $user;
-        $this->order = $order;
+        $this->user = '$user';
+        $this->order = '$order';
     }
     public function broadcastOn()
     {

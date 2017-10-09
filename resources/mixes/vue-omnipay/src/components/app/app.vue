@@ -2,7 +2,7 @@
   <div class="omnipay-body">
     <div class="omnipay-item">
       <div class="left">
-        <div class="logo"><img src="/static/assets/wechat.png"></div>
+        <div class="logo"><img src="/vendor/omnipay/assets/wechat.png"></div>
         <div class="price">应付金额：<strong><i>￥</i>{{ price }}</strong></div>
         <div class="created_at">
           <p>订单名称：{{ name }}</p>
@@ -123,7 +123,7 @@ body{
     >.pic{
       width: 260px;
       height: 260px;
-      background: url("/static/assets/loading.gif") center center no-repeat;
+      background: url("/vendor/omnipay/assets/loading.gif") center center no-repeat;
       border:1px solid #e7e7e7;
     }
     >.fb{
@@ -138,7 +138,7 @@ body{
         width:34px;
         height:34px;
         float:left;
-        background: url("/static/assets/v1icon.png") 0 -40px no-repeat;
+        background: url("/vendor/omnipay/assets/v1icon.png") 0 -40px no-repeat;
         margin:4px 20px 0;
       }
     }

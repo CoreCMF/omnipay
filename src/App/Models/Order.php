@@ -2,6 +2,7 @@
 
 namespace CoreCMF\Omnipay\App\Models;
 
+use Auth;
 use Schema;
 use Illuminate\Database\Eloquent\Model;
 use CoreCMF\Omnipay\App\Events\OrderStatusUpdated;
@@ -21,6 +22,7 @@ class Order extends Model
      */
     public function getOrder($orderId)
     {
+        event(new OrderStatusUpdated(Auth::user(),$this)); //支付完成事件
         return $this->where('order_id', $orderId)->first();
     }
     /**

@@ -42,6 +42,7 @@ class InstallCommand extends Command
     public function handle()
     {
         $this->info($this->install->migrate());
+        $this->info($this->install->publish('omnipay'));
         $this->info($this->install->seed(\CoreCMF\Omnipay\Databases\seeds\ConfigTableSeeder::class));
     }
 }
