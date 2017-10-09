@@ -14,8 +14,8 @@ new Vue({
   el: '#app',
   created () {
     let options = {
-      broadcaster: 'socket.io',
-      host: 'dashboard.spatie.be:6001'
+      broadcaster: window.config.broadcast.broadcaster,
+      host: window.config.broadcast.host
     }
     this.echo = new Echo(options)
   },

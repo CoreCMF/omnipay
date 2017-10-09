@@ -39,26 +39,26 @@ export default {
   },
   computed: {
     gateway () {
-      return window.config.data.order.gateway
+      return window.config.order.gateway
     },
     price () {
-      return window.config.data.order.fee
+      return window.config.order.fee
     },
     created_at () {
-      return window.config.data.order.created_at
+      return window.config.order.created_at
     },
     order_id () {
-      return window.config.data.order.order_id
+      return window.config.order.order_id
     },
     name () {
-      return window.config.data.order.name
+      return window.config.order.name
     },
     /**
      * [wechatQrcode 微信支付pc二维码]
      * @return {[type]} [description]
      */
     wechatQrcode () {
-      return window.config.data.wechat.webOrder
+      return window.config.wechat.webOrder
     }
   }
 }
