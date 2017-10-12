@@ -2,12 +2,12 @@
   <div class="omnipay-body">
     <div class="omnipay-item">
       <div class="left">
-        <div class="logo"><img src="/vendor/omnipay/assets/wechat.png"></div>
-        <div class="price">应付金额：<strong><i>￥</i>{{ price }}</strong></div>
+        <div class="logo"><img :src="'/vendor/omnipay/assets/' + order.gateway +'.png'"></div>
+        <div class="price">应付金额：<strong><i>￥</i>{{ order.fee }}</strong></div>
         <div class="created_at">
-          <p>订单名称：{{ name }}</p>
-          <p>订单编号：{{ order_id }}</p>
-          <p>创建时间：{{ created_at }}</p>
+          <p>订单名称：{{ order.name }}</p>
+          <p>订单编号：{{ order.order_id }}</p>
+          <p>创建时间：{{ order.created_at }}</p>
         </div>
       </div>
       <div class="right">
@@ -25,33 +25,23 @@
 </template>
 
 <script>
+import echo from '../mixins/echo'
 export default {
   name: 'app',
   created () {
-
   },
+  mixins: [echo],
   data () {
     return {
       wechatQrcodeConfig: {
         size: 260
-      }
+      },
+      responseOrder: null
     }
   },
   computed: {
-    gateway () {
-      return window.config.order.gateway
-    },
-    price () {
-      return window.config.order.fee
-    },
-    created_at () {
-      return window.config.order.created_at
-    },
-    order_id () {
-      return window.config.order.order_id
-    },
-    name () {
-      return window.config.order.name
+    order () {
+      return this.responseOrder ? this.responseOrder : window.config.order
     },
     /**
      * [wechatQrcode 微信支付pc二维码]
@@ -59,6 +49,22 @@ export default {
      */
     wechatQrcode () {
       return window.config.wechat.webOrder
+    }
+  },
+  methods: {
+    getBroadcast () {
+      return {
+        channel: 'App.User.' + window.config.userId,
+        type: 'private'
+      }
+    },
+    getEventHandlers () {
+      return {
+        'CoreCMF\\Omnipay\\App\\Events\\OrderStatusUpdated': response => {
+          this.responseOrder = response.order
+          console.log(this.responseOrder)
+        }
+      }
     }
   }
 }
