@@ -1,11 +1,18 @@
-import { forIn } from 'lodash';
-
+import { forIn } from 'lodash'
 export default {
-    created() {
-        forIn(this.getEventHandlers(), (handler, eventName) => {
-            this.$root.echo
-                .private('dashboard')
-                .listen(`.App.Events.${eventName}`, response => handler(response));
-        });
-    },
-};
+  data () {
+    return {
+      broadcast: {
+        channel: null,
+        type: 'channel'
+      }
+    }
+  },
+  created () {
+    forIn(this.getEventHandlers(), (handler, eventName) => {
+      this.$root.echo
+          .private(this.channel)
+          .listen(`.${eventName}`, response => handler(response))
+    })
+  }
+}
