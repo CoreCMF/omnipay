@@ -22,7 +22,6 @@ class Order extends Model
      */
     public function getOrder($orderId)
     {
-        event(new OrderStatusUpdated(Auth::user(),$this->get())); //支付完成事件
         return $this->where('order_id', $orderId)->first();
     }
     /**
@@ -36,7 +35,7 @@ class Order extends Model
         if ($update) {
             $order = $this->where('order_id', $completeOrder['order_id'])->where('fee', $completeOrder['fee'])->first();
             $this->setOrder($order);
-            event(new OrderStatusUpdated($this)); //支付完成事件
+            event(new OrderStatusUpdated(Auth::user(),$this->order)); //支付完成事件
             return true;
         }else{
             return false;
