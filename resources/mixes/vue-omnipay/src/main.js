@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import App from './components/app'
+import 'font-awesome/css/font-awesome.css'
 
 window._ = require('lodash')
 import Echo from 'laravel-echo'

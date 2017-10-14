@@ -10,7 +10,13 @@
           <p>创建时间：{{ order.created_at }}</p>
         </div>
       </div>
-      <div class="right">
+      <div class="right" v-if="order.gateway != 'wechat'">
+        <i class="fa fa-check-circle"></i>
+        <span>支付成功</span>
+        <span>支付失败</span>
+        <p>订单号：{{ order.order_id }}</p>
+      </div>
+      <div class="right-wechat" v-else>
         <div class="pic">
           <bve-qrcode-item
             class="qrcode"
@@ -48,7 +54,7 @@ export default {
      * @return {[type]} [description]
      */
     wechatQrcode () {
-      return window.config.wechat.webOrder
+      return window.config.wechat ? window.config.wechat.webOrder : null
     }
   },
   methods: {
@@ -98,6 +104,10 @@ body{
     padding: 5% 5% 5% 5%;
     >.logo{
       padding-bottom: 5%;
+      >img{
+        width: 160px;
+        height: 45px;
+      }
     }
     >.price{
       padding-bottom: 5%;
@@ -120,6 +130,22 @@ body{
     }
   }
   >.right{
+    width: 270px;
+    padding: 5% 5% 5% 5%;
+    display: flex;
+    display: -webkit-flex; /* Safari */
+    flex-direction: column;
+    align-items: center;
+    >i{
+      color: #13ce66;
+      font-size: 75px;
+    }
+    >span{
+      font-size: 35px;
+      margin: 5px;
+    }
+  }
+  >.right-wechat{
     width: 270px;
     padding: 5% 5% 5% 5%;
     display: flex;

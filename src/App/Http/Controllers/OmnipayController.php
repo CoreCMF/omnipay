@@ -11,6 +11,7 @@ class OmnipayController extends Controller
 {
     private $orderModel;
     private $request;
+    private $order;
 
     public function __construct(Order $orderPro, Request $request){
        $this->orderModel = $orderPro;
@@ -18,18 +19,18 @@ class OmnipayController extends Controller
     }
     public function pay($gatewayNmae)
     {
-        // $uid = Auth::id()? Auth::id():0;
-        // $createOrder = [
-        //     'order_id'      => date('YmdHis') . mt_rand(100000,999999),
-        //     'uid'     => $uid,
-        //     'name'    => '测试订单[驱动:'.$gatewayNmae.']',
-        //     'fee'     => 16.8,
-        //     'gateway' => $gatewayNmae
-        // ];
-        // $order = $this->orderModel->create($createOrder);//订单写入数据库
+        $uid = Auth::id()? Auth::id():0;
+        $createOrder = [
+            'order_id'      => date('YmdHis') . mt_rand(100000,999999),
+            'uid'     => $uid,
+            'name'    => '测试订单[驱动:'.$gatewayNmae.']',
+            'fee'     => 16.8,
+            'gateway' => $gatewayNmae
+        ];
+        $order = $this->orderModel->create($createOrder);//订单写入数据库
 
-        $orderId = '20171007065552327701';
-        $order = $this->orderModel->getOrder($orderId);
+        // $orderId = '20171007065552327701';
+        // $order = $this->orderModel->getOrder($orderId);
         $gateway = resolve('omnipay')->gateway($gatewayNmae);
         switch ($gatewayNmae) {
           case 'alipay':
@@ -114,9 +115,11 @@ class OmnipayController extends Controller
      */
     public function callback($gatewayNmae)
     {
-        if ($this->completePurchase($gatewayNmae)) {
-          return '支付成功';
-        }
+        $this->order['status'] = $this->completePurchase($gatewayNmae);
+        $builderAsset = resolve('builderAsset');
+        $builderAsset->config('order',$this->order);
+        view()->share('resources', $builderAsset->response());//视图共享数据
+        return view('core::index',[ 'model' => 'omnipay']);
     }
     /**
      * [notify 异步通知处理]
@@ -172,9 +175,18 @@ class OmnipayController extends Controller
             }
             $order['gateway'] = $gatewayNmae;
             $order['status'] = 'paid';
+            $this->setOrder($order);
             return $this->orderModel->paySuccess($order);
         }else{
             return false;
         }
+    }
+    /**
+     * [setOrder 设置当前订单]
+     * @param [type] $order [description]
+     */
+    protected function setOrder($order)
+    {
+        $this->order = $order;
     }
 }
