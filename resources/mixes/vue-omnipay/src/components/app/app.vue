@@ -11,10 +11,15 @@
         </div>
       </div>
       <div class="right" v-if="order.gateway != 'wechat'">
-        <i class="fa fa-check-circle"></i>
-        <span>支付成功</span>
-        <span>支付失败</span>
-        <p>订单号：{{ order.order_id }}</p>
+        <div class="paid" v-if=" order.status == 'paid' ">
+          <i class="fa fa-check-circle"></i>
+          <span>支付成功</span>
+        </div>
+        <div class="unpaid" v-else>
+          <i class="fa fa-info-circle"></i>
+          <span>未支付</span>
+        </div>
+        <p>订单号：{{ order.query_id }}</p>
       </div>
       <div class="right-wechat" v-else>
         <div class="pic">
@@ -67,8 +72,9 @@ export default {
     getEventHandlers () {
       return {
         'CoreCMF\\Omnipay\\App\\Events\\OrderStatusUpdated': response => {
-          this.responseOrder = response.order
-          console.log(this.responseOrder)
+          if (this.order.order_id == response.order.order_id) {
+            this.responseOrder = response.order
+          }
         }
       }
     }
@@ -136,13 +142,37 @@ body{
     display: -webkit-flex; /* Safari */
     flex-direction: column;
     align-items: center;
-    >i{
-      color: #13ce66;
-      font-size: 75px;
+
+    >.paid{
+      display: flex;
+      display: -webkit-flex; /* Safari */
+      flex-direction: column;
+      align-items: center;
+      >i{
+        color: #13ce66;
+        font-size: 75px;
+      }
+      >span{
+        font-size: 35px;
+        margin: 5px;
+      }
     }
-    >span{
-      font-size: 35px;
-      margin: 5px;
+    >.unpaid{
+      display: flex;
+      display: -webkit-flex; /* Safari */
+      flex-direction: column;
+      align-items: center;
+      >i{
+        color: #f9c855;
+        font-size: 75px;
+      }
+      >span{
+        font-size: 35px;
+        margin: 5px;
+      }
+    }
+    >p{
+      font-size: 13px;
     }
   }
   >.right-wechat{
