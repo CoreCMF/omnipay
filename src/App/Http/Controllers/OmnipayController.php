@@ -115,9 +115,10 @@ class OmnipayController extends Controller
      */
     public function callback($gatewayNmae)
     {
-        $this->order['status'] = $this->completePurchase($gatewayNmae);
+        $this->completePurchase($gatewayNmae);
+        $order = $this->orderModel->getOrder($this->order['order_id']);
         $builderAsset = resolve('builderAsset');
-        $builderAsset->config('order',$this->order);
+        $builderAsset->config('order',$order);
         view()->share('resources', $builderAsset->response());//视图共享数据
         return view('core::index',[ 'model' => 'omnipay']);
     }
@@ -173,7 +174,6 @@ class OmnipayController extends Controller
                 ];
                 break;
             }
-            $order['gateway'] = $gatewayNmae;
             $order['status'] = 'paid';
             $this->setOrder($order);
             return $this->orderModel->paySuccess($order);
