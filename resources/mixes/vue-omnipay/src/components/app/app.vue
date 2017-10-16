@@ -47,7 +47,10 @@ export default {
       wechatQrcodeConfig: {
         size: 260
       },
-      responseOrder: null
+      responseOrder: {
+        query_id: null,
+        status: 'unpaid'
+      }
     }
   },
   computed: {
@@ -72,7 +75,7 @@ export default {
     getEventHandlers () {
       return {
         'CoreCMF\\Omnipay\\App\\Events\\OrderStatusUpdated': response => {
-          if (this.order.order_id == response.order.order_id) {
+          if (this.order.order_id === response.order.order_id) {
             this.responseOrder = response.order
           }
         }
