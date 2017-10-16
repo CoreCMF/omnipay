@@ -47,10 +47,7 @@ export default {
       wechatQrcodeConfig: {
         size: 260
       },
-      responseOrder: {
-        query_id: null,
-        status: 'unpaid'
-      }
+      responseOrder: null
     }
   },
   computed: {
