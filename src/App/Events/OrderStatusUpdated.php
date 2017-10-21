@@ -12,7 +12,6 @@ class OrderStatusUpdated implements ShouldBroadcast
 
     // protected $orderModel;
     public $order;
-    private $user;
 
     /**
      * 创建一个新的事件实例.
@@ -20,13 +19,12 @@ class OrderStatusUpdated implements ShouldBroadcast
      * @param  Order  $order
      * @return void
      */
-    public function __construct($user,$order)
+    public function __construct($order)
     {
-        $this->user = $user;
         $this->order = $order;
     }
     public function broadcastOn()
     {
-        return new PrivateChannel('App.User.'.$this->user->id);
+        return new PrivateChannel('App.User.'.$this->order->uid);
     }
 }

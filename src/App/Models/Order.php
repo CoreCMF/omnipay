@@ -2,8 +2,6 @@
 
 namespace CoreCMF\Omnipay\App\Models;
 
-use Auth;
-use Schema;
 use Illuminate\Database\Eloquent\Model;
 use CoreCMF\Omnipay\App\Events\OrderStatusUpdated;
 
@@ -35,7 +33,7 @@ class Order extends Model
         if ($update) {
             $order = $this->where('order_id', $completeOrder['order_id'])->where('fee', $completeOrder['fee'])->first();
             $this->setOrder($order);
-            event(new OrderStatusUpdated(Auth::user(),$this->order)); //支付完成事件
+            event(new OrderStatusUpdated($this->order)); //支付完成事件
             return true;
         }else{
             return false;
