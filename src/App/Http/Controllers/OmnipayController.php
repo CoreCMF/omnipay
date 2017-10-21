@@ -24,7 +24,7 @@ class OmnipayController extends Controller
             'order_id'      => date('YmdHis') . mt_rand(100000,999999),
             'uid'     => $uid,
             'name'    => '测试订单[驱动:'.$gatewayNmae.']',
-            'fee'     => 16.8,
+            'fee'     => 0.01,
             'gateway' => $gatewayNmae
         ];
         $order = $this->orderModel->create($createOrder);//订单写入数据库
@@ -143,10 +143,17 @@ class OmnipayController extends Controller
     protected function completePurchase($gatewayNmae)
     {
         $gateway = resolve('omnipay')->gateway($gatewayNmae);
-        $options = [
-            'params' => $this->request->all(),
-            'request_params' => $this->request->all()
-        ];
+
+        if ($gatewayNmae == 'wechat') {
+          $options = [
+              'request_params' => file_get_contents('php://input')
+          ];
+        }else{
+          $options = [
+              'params' => $this->request->all(),
+              'request_params' => $this->request->all()
+          ];
+        }
         $response = $gateway->completePurchase($options)->send();
         if ($response->isPaid()||$response->isSuccessful()) {
             $data = $response->getData();
@@ -159,12 +166,12 @@ class OmnipayController extends Controller
                 ];
                 break;
               case 'wechat':
-                // $order = [
-                //     'order_id'  => $data['out_trade_no'],
-                //     'fee'       => $data['total_amount'],
-                //     'query_id'  => $data['trade_no'],
-                // ];
-                $order = json_encode($data);
+                $data = $response->getRequestData();
+                $order = [
+                    'order_id'  => $data['out_trade_no'],
+                    'fee'       => $data['total_fee']*0.01,
+                    'query_id'  => $data['transaction_id'],
+                ];
                 break;
               case 'unionpay':
                 $order = [
