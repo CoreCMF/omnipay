@@ -16,7 +16,7 @@ Route::group(['prefix' => 'api', 'middleware' => 'api', 'namespace' => 'CoreCMF\
     | 需要用户认证路由模块
     |--------------------------------------------------------------------------
     */
-    Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => []], function () {
+    Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth:api','adminRole']], function () {
     	// 后台仪表盘路由
 	    Route::group(['prefix' => 'omnipay', 'as' => 'omnipay.'], function () {
         //配置

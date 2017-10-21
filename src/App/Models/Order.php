@@ -11,8 +11,33 @@ class Order extends Model
 
     protected $fillable = ['order_id','uid','name','fee','gateway'];
 
-    public $order;
-
+    protected $appends = ['showStatus','showGateway'];
+    /**
+     * [getShowStatusAttribute 显示付款状态]
+     * @return [type] [description]
+     */
+    public function getShowStatusAttribute()
+    {
+        return ($this->attributes['status'] == 'unpaid')? '已付款': '代付款';
+    }
+    /**
+     * [getShowGatewayAttribute 显示支付方式]
+     * @return [type] [description]
+     */
+    public function getShowGatewayAttribute()
+    {
+        switch ($this->attributes['gateway']) {
+          case 'alipay':
+            return '支付宝';
+          break;
+          case 'wechat':
+            return '微信支付';
+          break;
+          case 'unionpay':
+            return '银联支付';
+          break;
+        }
+    }
     /**
      * [getOrder 根据订单id获取订单]
      * @param  [type] $orderId [description]
@@ -32,17 +57,10 @@ class Order extends Model
         $update = $this->where('order_id', $completeOrder['order_id'])->where('fee', $completeOrder['fee'])->update($completeOrder);
         if ($update) {
             $order = $this->where('order_id', $completeOrder['order_id'])->where('fee', $completeOrder['fee'])->first();
-            $this->setOrder($order);
-            event(new OrderStatusUpdated($this->order)); //支付完成事件
+            event(new OrderStatusUpdated($order)); //支付完成事件
             return true;
         }else{
             return false;
         }
-    }
-
-    public function setOrder($order)
-    {
-        $this->order = $order;
-        return $this;
     }
 }
