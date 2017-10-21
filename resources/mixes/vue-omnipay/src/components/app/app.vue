@@ -10,7 +10,7 @@
           <p>创建时间：{{ order.created_at }}</p>
         </div>
       </div>
-      <div class="right" v-if="order.gateway != 'wechat'">
+      <div class="right" v-if="order.gateway != 'wechat' || order.status == 'paid'">
         <div class="paid" v-if=" order.status == 'paid' ">
           <i class="fa fa-check-circle"></i>
           <span>支付成功</span>
