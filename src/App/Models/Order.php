@@ -4,6 +4,7 @@ namespace CoreCMF\Omnipay\App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use CoreCMF\Omnipay\App\Events\OrderStatusUpdated;
+use CoreCMF\Omnipay\App\Events\PaySuccessOrder;
 
 class Order extends Model
 {
@@ -49,7 +50,8 @@ class Order extends Model
         $update = $this->where('order_id', $completeOrder['order_id'])->where('fee', $completeOrder['fee'])->update($completeOrder);
         if ($update) {
             $order = $this->where('order_id', $completeOrder['order_id'])->where('fee', $completeOrder['fee'])->first();
-            event(new OrderStatusUpdated($order)); //支付完成事件
+            event(new PaySuccessOrder($order)); //支付完成事件
+            event(new OrderStatusUpdated($order)); //支付完成广播事件
             return true;
         }else{
             return false;
