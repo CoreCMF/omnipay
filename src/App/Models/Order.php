@@ -18,7 +18,9 @@ class Order extends Model
      */
     public function getShowStatusAttribute()
     {
-        return ($this->attributes['status'] == 'unpaid')? '已付款': '代付款';
+        if (array_key_exists('status',$this->attributes)) {
+          return ($this->attributes['status'] == 'unpaid')? '已付款': '代付款';
+        }
     }
     /**
      * [getShowGatewayAttribute 显示支付方式]
@@ -26,17 +28,7 @@ class Order extends Model
      */
     public function getShowGatewayAttribute()
     {
-        switch ($this->attributes['gateway']) {
-          case 'alipay':
-            return '支付宝';
-          break;
-          case 'wechat':
-            return '微信支付';
-          break;
-          case 'unionpay':
-            return '银联支付';
-          break;
-        }
+        return asset('vendor/omnipay/assets/'.$this->attributes['gateway'].'.png');
     }
     /**
      * [getOrder 根据订单id获取订单]
