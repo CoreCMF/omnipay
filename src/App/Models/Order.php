@@ -5,6 +5,7 @@ namespace CoreCMF\Omnipay\App\Models;
 use Illuminate\Database\Eloquent\Model;
 use CoreCMF\Omnipay\App\Events\OrderStatusUpdated;
 use CoreCMF\Omnipay\App\Events\PaySuccessOrder;
+use CoreCMF\Omnipay\App\Events\CreateOrder;
 
 class Order extends Model
 {
@@ -30,6 +31,14 @@ class Order extends Model
     public function getShowGatewayAttribute()
     {
         return asset('vendor/omnipay/assets/'.$this->attributes['gateway'].'.png');
+    }
+    /**
+     * [createOrder 创建订单]
+     * @return [type] [description]
+     */
+    public function createOrder($order)
+    {
+        event(new CreateOrder($order));//通过事件事件 创建支付订单
     }
     /**
      * [getOrder 根据订单id获取订单]

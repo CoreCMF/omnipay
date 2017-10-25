@@ -6,7 +6,6 @@ use Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use CoreCMF\Omnipay\App\Models\Order;
-use CoreCMF\Omnipay\App\Events\CreateOrder;
 
 class OmnipayController extends Controller
 {
@@ -28,7 +27,7 @@ class OmnipayController extends Controller
             'fee'     => 0.01,
             'gateway' => $gatewayNmae
         ];
-        event(new CreateOrder($createOrder));//事件 创建支付订单
+        $this->orderModel->createOrder($createOrder);//创建支付订单
 
         $orderId = session('OmnipayOrderId');
         $order = $this->orderModel->getOrder($orderId);
