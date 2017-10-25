@@ -6,6 +6,7 @@ use Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use CoreCMF\Omnipay\App\Models\Order;
+use CoreCMF\Omnipay\App\Events\CreateOrder;
 
 class OmnipayController extends Controller
 {
@@ -27,10 +28,15 @@ class OmnipayController extends Controller
             'fee'     => 0.01,
             'gateway' => $gatewayNmae
         ];
-        $order = $this->orderModel->create($createOrder);//订单写入数据库
+        event(new CreateOrder($createOrder));//事件 创建支付订单
 
-        // $orderId = '20171007065552327701';
-        // $order = $this->orderModel->getOrder($orderId);
+        $orderId = session('OmnipayOrderId');
+        $order = $this->orderModel->getOrder($orderId);
+        if (!$order) {
+          return '没有找到订单';
+        }elseif($order->status == 'paid'){
+          return '订单已付款';
+        }
         $gateway = resolve('omnipay')->gateway($gatewayNmae);
         switch ($gatewayNmae) {
           case 'alipay':
