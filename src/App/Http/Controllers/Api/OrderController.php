@@ -36,6 +36,13 @@ class OrderController extends Controller
                             ->pageSize($this->configModel->getPageSize())
                             ->getData($this->orderModel);
         $pictureConfig = [ 'width'=>80, 'class'=>'img-responsive', 'alt'=>'支付方式'];
+        //组类按钮配置
+        $groupButton = [
+          'buttonType'=>'group',    'apiUrl'=> route('api.admin.system.menu.edit'), 'groupKey'=> 'status', 'group'=> [
+            'unpaid'=>['title'=>'关闭','type'=>'warning','icon'=>'fa fa-power-off'],
+            'paid'=>['title'=>'退款','type'=>'danger','icon'=>'fa fa-history'],
+          ]
+        ];
         $table = resolve('builderTable')
                   ->data($data['model'])
                   ->column(['prop' => 'id',         'label'=> 'ID',     'width'=> '55'])
@@ -46,8 +53,8 @@ class OrderController extends Controller
                   ->column(['prop' => 'showGateway','label'=> '付款方式', 'minWidth'=> '120',	'type' => 'picture', 'config'=> $pictureConfig ])
                   ->column(['prop' => 'rightButton','label'=> '操作',   'minWidth'=> '220',	'type' => 'btn'])                       // 添加新增按钮
                   ->topButton(['buttonType'=>'default',    'apiUrl'=> route('api.admin.system.menu.delete'),'title'=>'批量导出','type'=>'info'])                         // 添加删除按钮
-                  ->rightButton(['buttonType'=>'default',    'apiUrl'=> route('api.admin.system.menu.edit'),'title'=>'订单详情','type'=>'info','icon'=>'fa fa-eye'])
-                  ->rightButton(['buttonType'=>'default',    'apiUrl'=> route('api.admin.system.menu.edit'),'title'=>'申请退款','type'=>'info','icon'=>'fa fa-eye'])
+                  ->rightButton(['buttonType'=>'default',  'apiUrl'=> route('api.admin.system.menu.edit'),'title'=>'订单详情','type'=>'info','icon'=>'fa fa-eye'])
+                  ->rightButton($groupButton)
                   ->pagination(['total'=>$data['total'], 'pageSize'=>$data['pageSize'], 'pageSizes'=>$pageSizes])
                   ->searchTitle('请输入搜索内容')
                   ->searchSelect(['order_id'=>'订单ID','query_id'=>'第三方ID','uid'=>'用户ID','username'=>'用户名','name'=>'订单名称','fee'=>'订单金额'])
