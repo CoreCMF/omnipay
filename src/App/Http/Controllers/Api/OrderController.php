@@ -35,6 +35,7 @@ class OrderController extends Controller
                             ->request($request)
                             ->pageSize($this->configModel->getPageSize())
                             ->getData($this->orderModel);
+        $pictureConfig = [ 'width'=>80, 'class'=>'img-responsive', 'alt'=>'支付方式'];
         $table = resolve('builderTable')
                   ->data($data['model'])
                   ->column(['prop' => 'id',         'label'=> 'ID',     'width'=> '55'])
@@ -42,12 +43,11 @@ class OrderController extends Controller
                   ->column(['prop' => 'name',       'label'=> '订单名称', 'minWidth'=> '260'])
                   ->column(['prop' => 'fee',        'label'=> '金额(元)', 'minWidth'=> '100'])
                   ->column(['prop' => 'showStatus', 'label'=> '状态', 'minWidth'=> '120'])
-                  ->column(['prop' => 'showGateway', 'label'=> '付款方式', 'minWidth'=> '120'])
+                  ->column(['prop' => 'showGateway','label'=> '付款方式', 'minWidth'=> '120',	'type' => 'picture', 'config'=> $pictureConfig ])
                   ->column(['prop' => 'rightButton','label'=> '操作',   'minWidth'=> '220',	'type' => 'btn'])                       // 添加新增按钮
-                  ->topButton(['buttonType'=>'delete',    'apiUrl'=> route('api.admin.system.menu.delete')])                         // 添加删除按钮
-                  ->rightButton(['buttonType'=>'default',    'apiUrl'=> route('api.admin.system.menu.edit'),'title'=>'订单详情','type'=>'info','icon'=>'fa fa-eye'])                         // 添加编辑按钮
-                  ->rightButton(['buttonType'=>'forbid',  'apiUrl'=> route('api.admin.system.menu.status')])                       // 添加禁用/启用按钮
-                  ->rightButton(['buttonType'=>'delete',  'apiUrl'=> route('api.admin.system.menu.delete')])                       // 添加删除按钮
+                  ->topButton(['buttonType'=>'default',    'apiUrl'=> route('api.admin.system.menu.delete'),'title'=>'批量导出','type'=>'info'])                         // 添加删除按钮
+                  ->rightButton(['buttonType'=>'default',    'apiUrl'=> route('api.admin.system.menu.edit'),'title'=>'订单详情','type'=>'info','icon'=>'fa fa-eye'])
+                  ->rightButton(['buttonType'=>'default',    'apiUrl'=> route('api.admin.system.menu.edit'),'title'=>'申请退款','type'=>'info','icon'=>'fa fa-eye'])
                   ->pagination(['total'=>$data['total'], 'pageSize'=>$data['pageSize'], 'pageSizes'=>$pageSizes])
                   ->searchTitle('请输入搜索内容')
                   ->searchSelect(['order_id'=>'订单ID','query_id'=>'第三方ID','uid'=>'用户ID','username'=>'用户名','name'=>'订单名称','fee'=>'订单金额'])
