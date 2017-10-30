@@ -3,7 +3,6 @@
 namespace CoreCMF\Omnipay\App\Console;
 
 use Illuminate\Console\Command;
-
 use CoreCMF\Core\Support\Commands\Install;
 
 class InstallCommand extends Command

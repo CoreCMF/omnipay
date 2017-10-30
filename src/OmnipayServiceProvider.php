@@ -79,5 +79,4 @@ class OmnipayServiceProvider extends ServiceProvider
         Route::pushMiddlewareToGroup('webOmnipay', \Illuminate\Routing\Middleware\SubstituteBindings::class);
         Route::pushMiddlewareToGroup('webOmnipay', \CoreCMF\Omnipay\App\Http\Middleware\VerifyCsrfToken::class);
     }
-    
 }

@@ -32,7 +32,7 @@ class CreateOrder
         $orderModel = new Order();
         $this->response = $orderModel->create($order);//订单写入数据库
         if ($this->response) {
-          session(['OmnipayOrderId' => $this->order['order_id']]);//记录
+            session(['OmnipayOrderId' => $this->order['order_id']]);//记录
         }
     }
 }

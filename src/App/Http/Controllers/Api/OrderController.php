@@ -26,8 +26,8 @@ class OrderController extends Controller
         if ($request->selectSearch == 'username') {
             $request->selectSearch = 'uid';
             $user = $this->userModel->findForUser($request->inputSearch);
-            if($user){
-              $request->inputSearch = $user->id;
+            if ($user) {
+                $request->inputSearch = $user->id;
             }
         }
         $pageSizes = $this->configModel->getPageSizes();
@@ -46,14 +46,14 @@ class OrderController extends Controller
         $table = resolve('builderTable')
                   ->data($data['model'])
                   ->column(['prop' => 'id',         'label'=> 'ID',     'width'=> '55'])
-                  ->column(['prop' => 'order_id',   'label'=> '订单ID',	 'width'=> '200'])
+                  ->column(['prop' => 'order_id',   'label'=> '订单ID',     'width'=> '200'])
                   ->column(['prop' => 'name',       'label'=> '订单名称', 'minWidth'=> '260'])
                   ->column(['prop' => 'fee',        'label'=> '金额(元)', 'minWidth'=> '100'])
                   ->column(['prop' => 'showStatus', 'label'=> '状态', 'minWidth'=> '120'])
-                  ->column(['prop' => 'showGateway','label'=> '付款方式', 'minWidth'=> '120',	'type' => 'picture', 'config'=> $pictureConfig ])
-                  ->column(['prop' => 'rightButton','label'=> '操作',   'minWidth'=> '220',	'type' => 'btn'])                       // 添加新增按钮
+                  ->column(['prop' => 'showGateway','label'=> '付款方式', 'minWidth'=> '120',    'type' => 'picture', 'config'=> $pictureConfig ])
+                  ->column(['prop' => 'rightButton','label'=> '操作',   'minWidth'=> '220',    'type' => 'btn'])                       // 添加新增按钮
                   ->topButton(['buttonType'=>'default',    'apiUrl'=> route('api.admin.system.menu.delete'),'title'=>'批量导出','type'=>'info'])                         // 添加删除按钮
-                  ->rightButton(['buttonType'=>'default',  'apiUrl'=> route('api.admin.system.menu.edit'),'title'=>'订单详情','type'=>'info','icon'=>'fa fa-eye'])
+                  ->rightButton(['buttonType'=>'default',  'apiUrl'=> route('api.admin.system.menu.edit'),'title'=>'详情','type'=>'info','icon'=>'fa fa-eye'])
                   ->rightButton($groupButton)
                   ->pagination(['total'=>$data['total'], 'pageSize'=>$data['pageSize'], 'pageSizes'=>$pageSizes])
                   ->searchTitle('请输入搜索内容')

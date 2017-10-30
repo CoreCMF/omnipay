@@ -13,15 +13,16 @@ class OmnipayController extends Controller
     private $request;
     private $order;
 
-    public function __construct(Order $orderPro, Request $request){
-       $this->orderModel = $orderPro;
-       $this->request = $request;
+    public function __construct(Order $orderPro, Request $request)
+    {
+        $this->orderModel = $orderPro;
+        $this->request = $request;
     }
     public function pay($gatewayNmae)
     {
         $uid = Auth::id()? Auth::id():0;
         $createOrder = [
-            'order_id'      => date('YmdHis') . mt_rand(100000,999999),
+            'order_id'      => date('YmdHis') . mt_rand(100000, 999999),
             'uid'     => $uid,
             'name'    => '测试订单[驱动:'.$gatewayNmae.']',
             'fee'     => 0.01,
@@ -32,20 +33,20 @@ class OmnipayController extends Controller
         $orderId = session('OmnipayOrderId');
         $order = $this->orderModel->getOrder($orderId);
         if (!$order) {
-          return '没有找到订单';
-        }elseif($order->status == 'paid'){
-          return '订单已付款';
+            return '没有找到订单';
+        } elseif ($order->status == 'paid') {
+            return '订单已付款';
         }
         $gateway = resolve('omnipay')->gateway($gatewayNmae);
         switch ($gatewayNmae) {
           case 'alipay':
-            $response = $this->alipay($gateway,$order);
+            $response = $this->alipay($gateway, $order);
             break;
           case 'wechat':
-            $response = $this->wechat($gateway,$order);
+            $response = $this->wechat($gateway, $order);
             break;
           case 'unionpay':
-            $response = $this->unionpay($gateway,$order);
+            $response = $this->unionpay($gateway, $order);
             break;
         }
         return $response;
@@ -55,10 +56,10 @@ class OmnipayController extends Controller
      * @param  [type] $gateway [description]
      * @return [type]          [description]
      */
-    protected function alipay($gateway,$order)
+    protected function alipay($gateway, $order)
     {
         if (config('omnipay.debug')) {
-          $gateway->sandbox();
+            $gateway->sandbox();
         }
         $order = [
           'out_trade_no' => $order->order_id,
@@ -74,7 +75,7 @@ class OmnipayController extends Controller
      * @param  [type] $gateway [description]
      * @return [type]          [description]
      */
-    protected function wechat($gateway,$order)
+    protected function wechat($gateway, $order)
     {
         $wechatOrder = [
           'open_id' => 'oEFAEj2KZxrRp2OijMFccnMrfN3Q',
@@ -92,21 +93,21 @@ class OmnipayController extends Controller
         ];
 
         $builderAsset = resolve('builderAsset');
-        $builderAsset->config('wechat',$wechat);
-        $builderAsset->config('order',$order);
+        $builderAsset->config('wechat', $wechat);
+        $builderAsset->config('order', $order);
         view()->share('resources', $builderAsset->response());//视图共享数据
-        return view('core::index',[ 'model' => 'omnipay']);
+        return view('core::index', [ 'model' => 'omnipay']);
     }
     /**
      * [unionpay 银联支付购买]
      * @param  [type] $gateway [description]
      * @return [type]          [description]
      */
-    protected function unionpay($gateway,$order)
+    protected function unionpay($gateway, $order)
     {
         $order = [
             'orderId'   => $order->order_id, //Your order ID
-            'txnTime'   => date('YmdHis',strtotime($order->created_at)), //Should be format 'YmdHis'
+            'txnTime'   => date('YmdHis', strtotime($order->created_at)), //Should be format 'YmdHis'
             'orderDesc' => $order->name, //Order Title
             'txnAmt'    => $order->fee*100, //Order Total Fee
         ];
@@ -123,9 +124,9 @@ class OmnipayController extends Controller
         $this->completePurchase($gatewayNmae);
         $order = $this->orderModel->getOrder($this->order['order_id']);
         $builderAsset = resolve('builderAsset');
-        $builderAsset->config('order',$order);
+        $builderAsset->config('order', $order);
         view()->share('resources', $builderAsset->response());//视图共享数据
-        return view('core::index',[ 'model' => 'omnipay']);
+        return view('core::index', [ 'model' => 'omnipay']);
     }
     /**
      * [notify 异步通知处理]
@@ -136,7 +137,7 @@ class OmnipayController extends Controller
     {
         if ($this->completePurchase($gatewayNmae)) {
             return 'success';
-        }else{
+        } else {
             return 'fail';
         }
     }
@@ -150,11 +151,11 @@ class OmnipayController extends Controller
         $gateway = resolve('omnipay')->gateway($gatewayNmae);
 
         if ($gatewayNmae == 'wechat') {
-          $options = [
+            $options = [
               'request_params' => file_get_contents('php://input')
           ];
-        }else{
-          $options = [
+        } else {
+            $options = [
               'params' => $this->request->all(),
               'request_params' => $this->request->all()
           ];
@@ -188,8 +189,8 @@ class OmnipayController extends Controller
             }
             $order['status'] = 'paid';
             $this->setOrder($order);
-            return $this->orderModel->paySuccess($order);
-        }else{
+            return $this->orderModel->payOrder($order);
+        } else {
             return false;
         }
     }

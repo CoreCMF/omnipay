@@ -15,15 +15,15 @@ class OmnipayConfigsTable extends Migration
     {
         Schema::create('omnipay_configs', function (Blueprint $table) {
             $table->increments('id')->unsigned();
-            $table->string('gateway',30)         ->comment('网关');
-            $table->string('driver',30)          ->comment('驱动');
-            $table->string('app_id',60)          ->comment('AppId')->nullable();
-            $table->string('seller_id',80)       ->comment('商家ID')->nullable();
-            $table->string('return_url',160)     ->comment('回调URl')->nullable();
-            $table->string('notify_url',160)     ->comment('通知URl')->nullable();
-            $table->string('private_key',80)     ->comment('密钥文件路径')->nullable();
-            $table->string('public_key',80)      ->comment('公钥文件路径')->nullable();
-            $table->string('other',160)          ->comment('其他')->nullable();
+            $table->string('gateway', 30)         ->comment('网关');
+            $table->string('driver', 30)          ->comment('驱动');
+            $table->string('app_id', 60)          ->comment('AppId')->nullable();
+            $table->string('seller_id', 80)       ->comment('商家ID')->nullable();
+            $table->string('return_url', 160)     ->comment('回调URl')->nullable();
+            $table->string('notify_url', 160)     ->comment('通知URl')->nullable();
+            $table->string('private_key', 80)     ->comment('密钥文件路径')->nullable();
+            $table->string('public_key', 80)      ->comment('公钥文件路径')->nullable();
+            $table->string('other', 160)          ->comment('其他')->nullable();
             $table->boolean('status')            ->comment('开关状态')->default(false);
             $table->timestamps();
         });

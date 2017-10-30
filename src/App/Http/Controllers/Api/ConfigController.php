@@ -13,20 +13,21 @@ class ConfigController extends Controller
     private $configModel;
     private $uploadModel;
 
-    public function __construct(Config $configPro, Upload $UploadRepo){
-       $this->configModel = $configPro;
-       $this->uploadModel = $UploadRepo;
-       $this->builderForm = resolve('builderForm')->item(['name' => 'status',         'type' => 'switch',   'label' => '开关']);
+    public function __construct(Config $configPro, Upload $UploadRepo)
+    {
+        $this->configModel = $configPro;
+        $this->uploadModel = $UploadRepo;
+        $this->builderForm = resolve('builderForm')->item(['name' => 'status',         'type' => 'switch',   'label' => '开关']);
     }
     public function index(Request $request)
     {
         $gateway = $request->tabIndex? $request->tabIndex: 'alipay';
         $configs = $this->configModel->where('gateway', '=', $gateway)->first();
         $this->builderForm->item(['name' => 'gateway', 'type' => 'hidden']);
-        $this->publicGatewayForm($gateway,$configs);//根据不同网关添加不同 form item
+        $this->publicGatewayForm($gateway, $configs);//根据不同网关添加不同 form item
         $this->publicForm();//添加公共form item
-        $this->builderForm->apiUrl('submit',route('api.admin.omnipay.config.update'))->itemData($configs);
-        return resolve('builderHtml')->title('支付配置')->item($this->builderForm)->config('layout',['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])->response();
+        $this->builderForm->apiUrl('submit', route('api.admin.omnipay.config.update'))->itemData($configs);
+        return resolve('builderHtml')->title('支付配置')->item($this->builderForm)->config('layout', ['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])->response();
     }
     /**
      * [update 配置更新]
@@ -36,7 +37,7 @@ class ConfigController extends Controller
     public function update(Request $request)
     {
         if ($this->configModel->where('gateway', '=', $request->gateway)->update($request->all())) {
-          $message = [
+            $message = [
                       'title'     => '保存成功',
                       'message'   => '系统设置保存成功!',
                       'type'      => 'success',
@@ -54,7 +55,7 @@ class ConfigController extends Controller
         $imageData = Input::all();
         $extension = ['pem','cer','pfx'];
         config(['filesystems.default' => 'local']);
-        $response = $this->uploadModel->fileUpload($imageData,'omnipay/certificates',$extension);
+        $response = $this->uploadModel->fileUpload($imageData, 'omnipay/certificates', $extension);
 
         return response()->json($response, 200);
     }
@@ -63,7 +64,7 @@ class ConfigController extends Controller
      * @param  [type] $gateway [description]
      * @return [type]          [description]
      */
-    public function publicGatewayForm($gateway,$configs)
+    public function publicGatewayForm($gateway, $configs)
     {
         $upload = [
             'extension' => ['pem','pfx','cer'],
@@ -89,10 +90,10 @@ class ConfigController extends Controller
                     ->item(['name' => 'other',         'type' => 'select',   'label' => '加密方式', 'placeholder' => '加密方式','options'=>$other])
                     ->item(array_merge(['name' => 'public_key', 'label' => 'alipayPublicKey',
                         'placeholder' => '支付宝公钥','fileName'=> $this->getFileName($configs->public_key)
-                    ],$upload))
+                    ], $upload))
                     ->item(array_merge(['name' => 'private_key','label' => 'privateKey',
                         'placeholder' => '自己生成的密钥','fileName'=> $this->getFileName($configs->private_key)
-                    ],$upload));
+                    ], $upload));
             break;
           case 'wechat':
             $driver = [
@@ -109,10 +110,10 @@ class ConfigController extends Controller
                     ->item(['name' => 'other',     'type' => 'text',     'label' => 'AppSecret',     'placeholder' => '开发者密码(AppSecret)'])
                     ->item(array_merge(['name' => 'public_key','type' => 'file',     'label' => 'apiclientCert',
                         'placeholder' => '微信公钥','fileName'=> $this->getFileName($configs->public_key)
-                    ],$upload))
+                    ], $upload))
                     ->item(array_merge(['name' => 'private_key','type' => 'file',    'label' => 'apiclientKey',
                         'placeholder' => '微信密钥','fileName'=> $this->getFileName($configs->private_key)
-                    ],$upload));
+                    ], $upload));
             break;
           case 'unionpay':
             $driver = [
@@ -124,11 +125,11 @@ class ConfigController extends Controller
                     ->item(['name' => 'app_id', 'type' => 'text',    'label' => 'merId',          'placeholder' => '商户号(merId)'])
                     ->item(array_merge(['name' => 'private_key','type' => 'file',    'label' => 'certPath',
                           'placeholder' => '商户私钥证书(certPath)','fileName'=> $this->getFileName($configs->private_key)
-                    ],$upload))
+                    ], $upload))
                     ->item(['name' => 'other',     'type' => 'text',     'label' => 'certPassword','placeholder' => '商户私钥证书密码(certPassword)'])
                     ->item(array_merge(['name' => 'public_key','type' => 'file',     'label' => 'certDir',
                           'placeholder' => '银联公钥证书(certDir)','fileName'=> $this->getFileName($configs->public_key)
-                    ],$upload));
+                    ], $upload));
             break;
         }
     }
@@ -142,12 +143,13 @@ class ConfigController extends Controller
         $this->builderForm->tabs($tabs)
                   ->item(['name' => 'return_url',     'type' => 'text',     'label' => '回调地址','disabled'=>true])
                   ->item(['name' => 'notify_url',     'type' => 'text',     'label' => '通知地址','disabled'=>true])
-                  ->config('labelWidth','120px')
+                  ->config('labelWidth', '120px')
                   ;
     }
-    public function getFileName($value){
+    public function getFileName($value)
+    {
         $upload = new Upload();
         $uploadObject = $upload->getUploadWhereFirst($value);
-        return ($uploadObject->code == 404 )? null: $uploadObject->name;
+        return ($uploadObject->code == 404)? null: $uploadObject->name;
     }
 }

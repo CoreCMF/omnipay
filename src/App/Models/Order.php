@@ -20,8 +20,8 @@ class Order extends Model
      */
     public function getShowStatusAttribute()
     {
-        if (array_key_exists('status',$this->attributes)) {
-          return ($this->attributes['status'] == 'unpaid')? '已付款': '代付款';
+        if (array_key_exists('status', $this->attributes)) {
+            return ($this->attributes['status'] == 'unpaid')? '已付款': '代付款';
         }
     }
     /**
@@ -54,7 +54,7 @@ class Order extends Model
      * @param  [type] $completeOrder [description]
      * @return [type]                [description]
      */
-    public function paySuccess($completeOrder)
+    public function payOrder($completeOrder)
     {
         $update = $this->where('order_id', $completeOrder['order_id'])->where('fee', $completeOrder['fee'])->update($completeOrder);
         if ($update) {
@@ -62,7 +62,7 @@ class Order extends Model
             event(new PaySuccessOrder($order)); //支付完成事件
             event(new OrderStatusUpdated($order)); //支付完成广播事件
             return true;
-        }else{
+        } else {
             return false;
         }
     }

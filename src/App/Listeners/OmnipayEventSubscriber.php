@@ -19,7 +19,7 @@ class OmnipayEventSubscriber
         switch ($main->event) {
           case 'adminMain':
             //后台前端路由注册
-            $main->routes->transform(function ($item, $key) use($main) {
+            $main->routes->transform(function ($item, $key) use ($main) {
                 if ($item->get('name') == 'admin') {
                     foreach (config('omnipay-route.admin') as $key => $route) {
                         $item->get('children')->push($route);
@@ -49,5 +49,4 @@ class OmnipayEventSubscriber
             'CoreCMF\Omnipay\App\Listeners\OmnipayEventSubscriber@onAdminMain'
         );
     }
-
 }
