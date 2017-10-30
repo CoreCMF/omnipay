@@ -33,14 +33,15 @@ class OrderController extends Controller
         $pageSizes = $this->configModel->getPageSizes();
         $data = resolve('builderModel')
                             ->request($request)
+                            ->orderBy('order_id', 'DESC')
                             ->pageSize($this->configModel->getPageSize())
                             ->getData($this->orderModel);
         $pictureConfig = [ 'width'=>80, 'class'=>'img-responsive', 'alt'=>'支付方式'];
         //组类按钮配置
         $groupButton = [
-          'buttonType'=>'group',    'apiUrl'=> route('api.admin.system.menu.edit'), 'groupKey'=> 'status', 'group'=> [
-            'unpaid'=>['title'=>'关闭','type'=>'warning','icon'=>'fa fa-power-off'],
-            'paid'=>['title'=>'退款','type'=>'danger','icon'=>'fa fa-history'],
+          'buttonType'=>'group',     'groupKey'=> 'status', 'group'=> [
+            'paid'=>['title'=>'退款','apiUrl'=> route('api.admin.omnipay.order.refund'),'type'=>'danger','icon'=>'fa fa-history'],
+            'unpaid'=>['title'=>'关闭','apiUrl'=> route('api.admin.omnipay.order.close'),'type'=>'warning','icon'=>'fa fa-power-off'],
           ]
         ];
         $table = resolve('builderTable')
@@ -60,5 +61,12 @@ class OrderController extends Controller
                   ->searchSelect(['order_id'=>'订单ID','query_id'=>'第三方ID','uid'=>'用户ID','username'=>'用户名','name'=>'订单名称','fee'=>'订单金额'])
                   ;
         return resolve('builderHtml')->title('支付订单')->item($table)->response();
+    }
+    public function refund(Request $request)
+    {
+        $this->orderModel->refund($request->id);
+    }
+    public function close(Request $request)
+    {
     }
 }
