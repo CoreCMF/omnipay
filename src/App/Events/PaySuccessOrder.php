@@ -4,7 +4,7 @@ namespace CoreCMF\Omnipay\App\Events;
 use Illuminate\Queue\SerializesModels;
 use CoreCMF\Omnipay\App\Models\Order;
 
-class SuccessOrder
+class PaySuccessOrder
 {
     use SerializesModels;
 
