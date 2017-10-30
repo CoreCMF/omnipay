@@ -101,7 +101,7 @@ class Order extends Model
             break;
         }
         if ($response->isSuccessful()) {
-          $this->where('order_id', $order['order_id'])->update(['status' => 'refund']);
+            $this->where('order_id', $order['order_id'])->update(['status' => 'refund']);
         }
         dd($response->isSuccessful());
     }
@@ -112,8 +112,8 @@ class Order extends Model
         }
         $biz = [
           'out_trade_no' => $order->order_id,
-          'refund_amount' => $order->fee,
-        ]
+          'refund_amount' => $order->fee
+        ];
         ksort($biz);
         return $gateway->refund()->setBizContent($biz)->send();
     }
