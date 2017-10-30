@@ -21,7 +21,20 @@ class Order extends Model
     public function getShowStatusAttribute()
     {
         if (array_key_exists('status', $this->attributes)) {
-            return ($this->attributes['status'] == 'unpaid')? '已付款': '代付款';
+            switch ($this->attributes['status']) {
+              case 'unpaid':
+                return '未付款';
+                break;
+              case 'paid':
+                return '已付款';
+                break;
+              case 'refund':
+                return '已退款';
+                break;
+              case 'close':
+                return '已关闭';
+                break;
+            }
         }
     }
     /**
@@ -45,9 +58,13 @@ class Order extends Model
      * @param  [type] $orderId [description]
      * @return [type]          [description]
      */
-    public function getOrder($orderId)
+    public function getOrder($id)
     {
-        return $this->where('order_id', $orderId)->first();
+        $order = $this->where('order_id', $id)->first();
+        if (!$order) {
+            $order = $this->where('id', $id)->first();
+        }
+        return $order;
     }
     /**
      * [paySuccess 支付成功后处理]
@@ -65,5 +82,39 @@ class Order extends Model
         } else {
             return false;
         }
+    }
+    /**
+     * [refund 退款]
+     * @return [type] [description]
+     */
+    public function refund($id)
+    {
+        $order = $this->getOrder($id);
+        $gatewayNmae = $order->gateway;
+        $gateway = resolve('omnipay')->gateway($gatewayNmae);
+        switch ($gatewayNmae) {
+          case 'alipay':
+            $response = $this->alipayRefund($order, $gateway);
+            break;
+          default:
+            # code...
+            break;
+        }
+        if ($response->isSuccessful()) {
+          $this->where('order_id', $order['order_id'])->update(['status' => 'refund']);
+        }
+        dd($response->isSuccessful());
+    }
+    public function alipayRefund($order, $gateway)
+    {
+        if (config('omnipay.debug')) {
+            $gateway->sandbox();
+        }
+        $biz = [
+          'out_trade_no' => $order->order_id,
+          'refund_amount' => $order->fee,
+        ]
+        ksort($biz);
+        return $gateway->refund()->setBizContent($biz)->send();
     }
 }
