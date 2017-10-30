@@ -16,7 +16,7 @@ Route::group(['prefix' => 'api', 'middleware' => 'api', 'namespace' => 'CoreCMF\
     | 需要用户认证路由模块
     |--------------------------------------------------------------------------
     */
-    Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => []], function () {
+    Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth:api','adminRole']], function () {
         // 后台仪表盘路由
         Route::group(['prefix' => 'omnipay', 'as' => 'omnipay.'], function () {
             //配置
@@ -25,6 +25,8 @@ Route::group(['prefix' => 'api', 'middleware' => 'api', 'namespace' => 'CoreCMF\
             Route::post('config/file', ['as' => 'config.file','uses' => 'ConfigController@file']);
             //订单
             Route::post('order', ['as' => 'order', 'uses' => 'OrderController@index']);
+            Route::post('order/refund', ['as' => 'order.refund', 'uses' => 'OrderController@refund']);
+            Route::post('order/close', ['as' => 'order.close', 'uses' => 'OrderController@close']);
         });
     });
 });
