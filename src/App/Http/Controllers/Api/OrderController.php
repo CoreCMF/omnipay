@@ -150,6 +150,11 @@ class OrderController extends Controller
                                 'label' => '查询ID'
                             ])
                             ->item([
+                                'name' => 'created_at',
+                                'type' => 'height',
+                                'label' => '创建时间'
+                            ])
+                            ->item([
                                 'name' => 'order_id',
                                 'type' => 'text',
                                 'label' => '订单id',
