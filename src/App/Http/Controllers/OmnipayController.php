@@ -107,9 +107,9 @@ class OmnipayController extends Controller
     {
         $order = [
             'orderId'   => $order->order_id, //Your order ID
-            'txnTime'   => date('YmdHis', strtotime($order->created_at)), //Should be format 'YmdHis'
+            'txnTime'   => date('YmdHis', $order->created_at->getTimestamp()), //Should be format 'YmdHis'
             'orderDesc' => $order->name, //Order Title
-            'txnAmt'    => $order->fee*100, //Order Total Fee
+            'txnAmt'    => $order->fee * 100, //Order Total Fee
         ];
         $response = $gateway->purchase($order)->send();
         $response->redirect();
