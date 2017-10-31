@@ -92,13 +92,14 @@ class Order extends Model
         $gatewayNmae = $order['gateway'];
         $gateway = resolve('omnipay')->gateway($gatewayNmae);
         switch ($gatewayNmae) {
-          case 'alipay':
-            $response = $this->alipayRefund($order, $gateway);
-            break;
-          default:
-            # code...
-            break;
+            case 'alipay':
+                $response = $this->alipayRefund($order, $gateway);
+                break;
+            case 'unionpay':
+                $response = $this->unionpayRefund($order, $gateway);
+                break;
         }
+        dd($response->getData());
         if ($response->isSuccessful()) {
             $this->where('order_id', $order['order_id'])->update(['status' => 'refund']);
         }
@@ -119,7 +120,22 @@ class Order extends Model
           'out_trade_no' => $order['order_id'],
           'refund_amount' => $order['fee']
         ];
-        ksort($biz);
         return $gateway->refund()->setBizContent($biz)->send();
+    }
+    /**
+     * [unionpayRefund 银联退款]
+     * @param  [type] $order   [description]
+     * @param  [type] $gateway [description]
+     * @return [type]          [description]
+     */
+    protected function unionpayRefund($order, $gateway)
+    {
+        $biz = [
+          'orderId' => $order['order_id'],
+          'txnTime' => date('YmdHis', strtotime($order['created_at']['date'])),
+          'txnAmt' => $order['fee'] * 100,
+          'queryId' => $order['query_id'],
+        ];
+        return $gateway->refund($biz)->send();
     }
 }
