@@ -25,6 +25,7 @@ Route::group(['prefix' => 'api', 'middleware' => 'api', 'namespace' => 'CoreCMF\
             Route::post('config/file', ['as' => 'config.file','uses' => 'ConfigController@file']);
             //订单
             Route::post('order', ['as' => 'order', 'uses' => 'OrderController@index']);
+            Route::post('order/refundHtml', ['as' => 'order.refundHtml', 'uses' => 'OrderController@refundHtml']);
             Route::post('order/refund', ['as' => 'order.refund', 'uses' => 'OrderController@refund']);
             Route::post('order/close', ['as' => 'order.close', 'uses' => 'OrderController@close']);
         });
