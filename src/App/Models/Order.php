@@ -87,10 +87,9 @@ class Order extends Model
      * [refund 退款]
      * @return [type] [description]
      */
-    public function refund($id)
+    public function refund($order)
     {
-        $order = $this->getOrder($id);
-        $gatewayNmae = $order->gateway;
+        $gatewayNmae = $order['gateway'];
         $gateway = resolve('omnipay')->gateway($gatewayNmae);
         switch ($gatewayNmae) {
           case 'alipay':
@@ -103,16 +102,22 @@ class Order extends Model
         if ($response->isSuccessful()) {
             $this->where('order_id', $order['order_id'])->update(['status' => 'refund']);
         }
-        dd($response->isSuccessful());
+        return $response->isSuccessful();
     }
-    public function alipayRefund($order, $gateway)
+    /**
+     * [alipayRefund 支付宝退款]
+     * @param  [type] $order   [description]
+     * @param  [type] $gateway [description]
+     * @return [type]          [description]
+     */
+    protected function alipayRefund($order, $gateway)
     {
         if (config('omnipay.debug')) {
             $gateway->sandbox();
         }
         $biz = [
-          'out_trade_no' => $order->order_id,
-          'refund_amount' => $order->fee
+          'out_trade_no' => $order['order_id'],
+          'refund_amount' => $order['fee']
         ];
         ksort($biz);
         return $gateway->refund()->setBizContent($biz)->send();
