@@ -17,13 +17,14 @@ class ConfigController extends Controller
     {
         $this->configModel = $configPro;
         $this->uploadModel = $UploadRepo;
-        $this->builderForm = resolve('builderForm')->item(['name' => 'status',         'type' => 'switch',   'label' => '开关']);
+        $this->builderForm = resolve('builderForm')
+            ->item(['name' => 'status',         'type' => 'switch',   'label' => '开关'])
+            ->item(['name' => 'gateway', 'type' => 'hidden']);
     }
     public function index(Request $request)
     {
         $gateway = $request->tabIndex? $request->tabIndex: 'alipay';
         $configs = $this->configModel->where('gateway', '=', $gateway)->first();
-        $this->builderForm->item(['name' => 'gateway', 'type' => 'hidden']);
         $this->publicGatewayForm($gateway, $configs);//根据不同网关添加不同 form item
         $this->publicForm();//添加公共form item
         $this->builderForm->apiUrl('submit', route('api.admin.omnipay.config.update'))->itemData($configs);
@@ -143,8 +144,7 @@ class ConfigController extends Controller
         $this->builderForm->tabs($tabs)
                   ->item(['name' => 'return_url',     'type' => 'text',     'label' => '回调地址','disabled'=>true])
                   ->item(['name' => 'notify_url',     'type' => 'text',     'label' => '通知地址','disabled'=>true])
-                  ->config('labelWidth', '120px')
-                  ;
+                  ->config('labelWidth', '120px');
     }
     public function getFileName($value)
     {
