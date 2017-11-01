@@ -151,7 +151,7 @@ class Order extends Model
     protected function unionpayRefund($order, $gateway)
     {
         $biz = [
-          'orderId' => $order['order_id'],
+          'orderId' => 'T'.$order['order_id'],
           'txnTime' => date('YmdHis', strtotime($order['created_at']['date'])),
           'txnAmt' => $order['fee'] * 100,
           'queryId' => $order['query_id'],
