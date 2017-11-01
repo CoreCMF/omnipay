@@ -95,11 +95,13 @@ class Order extends Model
             case 'alipay':
                 $response = $this->alipayRefund($order, $gateway);
                 break;
+            case 'wechat':
+                $response = $this->wechatRefund($order, $gateway);
+                break;
             case 'unionpay':
                 $response = $this->unionpayRefund($order, $gateway);
                 break;
         }
-        dd($response->getData());
         if ($response->isSuccessful()) {
             $this->where('order_id', $order['order_id'])->update(['status' => 'refund']);
         }
@@ -121,6 +123,24 @@ class Order extends Model
           'refund_amount' => $order['fee']
         ];
         return $gateway->refund()->setBizContent($biz)->send();
+    }
+    /**
+     * [wechatRefund 微信退款]
+     * @param  [type] $order   [description]
+     * @param  [type] $gateway [description]
+     * @return [type]          [description]
+     */
+    protected function wechatRefund($order, $gateway)
+    {
+        // 获取成交金额
+        $totalFee = $this->getOrder($order['order_id'])['fee'];
+        $biz = [
+          'out_trade_no' => $order['order_id'],
+          'out_refund_no' => $order['order_id'],
+          'total_fee' => $totalFee * 100,
+          'refund_fee' => $order['fee'] * 100,
+        ];
+        return $gateway->refund($biz)->send();
     }
     /**
      * [unionpayRefund 银联退款]
