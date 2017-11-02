@@ -38,8 +38,8 @@ class Config extends Model
             $private_key = $item->private_key? storage_path('app/'.$upload->getUploadWhereFirst($item->private_key)->path):null;
             $public_key = $item->public_key? storage_path('app/'.$upload->getUploadWhereFirst($item->public_key)->path):null;
             switch ($item->gateway) {
-            case 'alipay':
-              config(['laravel-omnipay.gateways.'.$item->gateway.'.driver' => $item->driver]);
+                case 'alipay':
+                config(['laravel-omnipay.gateways.'.$item->gateway.'.driver' => $item->driver]);
                 config(['laravel-omnipay.gateways.'.$item->gateway.'.options' => [
                       'signType' => $item->other,
                     'appId'    => $item->app_id,
@@ -49,9 +49,9 @@ class Config extends Model
                     'returnUrl' => $item->return_url,
                     'notifyUrl' => $item->notify_url
                 ]]);
-            break;
-            case 'wechat':
-              config(['laravel-omnipay.gateways.'.$item->gateway.'.driver' => $item->driver]);
+                break;
+                case 'wechat':
+                config(['laravel-omnipay.gateways.'.$item->gateway.'.driver' => $item->driver]);
                 config(['laravel-omnipay.gateways.'.$item->gateway.'.options' => [
                     'appId'    => $item->app_id,
                     'mchId'    => $item->seller_id,
@@ -62,9 +62,9 @@ class Config extends Model
                     'notifyUrl' => $item->notify_url,
                     'tradeType' => 'NATIVE',
                 ]]);
-            break;
-            case 'unionpay':
-              config(['laravel-omnipay.gateways.'.$item->gateway.'.driver' => $item->driver]);
+                break;
+                case 'unionpay':
+                config(['laravel-omnipay.gateways.'.$item->gateway.'.driver' => $item->driver]);
                 config(['laravel-omnipay.gateways.'.$item->gateway.'.options' => [
                     'merId' => $item->app_id,
                         'certPath' => $private_key,
@@ -73,7 +73,7 @@ class Config extends Model
                         'returnUrl' => $item->return_url,
                         'notifyUrl' => $item->notify_url
                 ]]);
-            break;
+                break;
           }
         });
     }
