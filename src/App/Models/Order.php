@@ -51,7 +51,8 @@ class Order extends Model
      */
     public function createOrder($order)
     {
-        event(new CreateOrder($order));//通过事件事件 创建支付订单
+        $response = $this->create($order);//订单写入数据库
+        event(new CreateOrder($response));//通过事件事件
     }
     /**
      * [getOrder 根据订单id获取订单]

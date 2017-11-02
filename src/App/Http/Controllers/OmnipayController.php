@@ -20,17 +20,7 @@ class OmnipayController extends Controller
     }
     public function pay($gatewayNmae)
     {
-        $uid = Auth::id()? Auth::id():0;
-        $createOrder = [
-            'order_id'      => date('YmdHis') . mt_rand(100000, 999999),
-            'uid'     => $uid,
-            'name'    => '测试订单[驱动:'.$gatewayNmae.']',
-            'fee'     => 0.01,
-            'gateway' => $gatewayNmae
-        ];
-        $this->orderModel->createOrder($createOrder);//创建支付订单
-
-        $orderId = session('OmnipayOrderId');
+        $orderId = $this->request->orderId;
         $order = $this->orderModel->getOrder($orderId);
         if (!$order) {
             return '没有找到订单';
@@ -88,7 +78,7 @@ class OmnipayController extends Controller
         $response = $gateway->purchase($wechatOrder)->send();
         $wechat = [
           'appOrder' => $response->getAppOrderData(),
-          'jsOrder' => $response->getJsOrderData(),
+          'jsOrder'  => $response->getJsOrderData(),
           'webOrder' => $response->getCodeUrl(),
         ];
 
