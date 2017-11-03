@@ -9,6 +9,7 @@
           <p>订单编号：{{ order.order_id }}</p>
           <p>创建时间：{{ order.created_at }}</p>
         </div>
+        <button type="button" @click="initPay()">确认支付</button>
       </div>
       <div class="right" v-if="order.gateway != 'wechat' || order.status == 'paid'">
         <div class="paid" v-if=" order.status == 'paid' ">
@@ -63,6 +64,29 @@ export default {
     }
   },
   methods: {
+    wechatPay () {
+      WeixinJSBridge.invoke(
+          'getBrandWCPayRequest',
+          window.config.wechat.jsOrder,
+          function (res) {
+            if (res.err_msg == "get_brand_wcpay_request:ok" ) {
+              this.responseOrder.status = 'paid'
+            }
+          }
+      )
+    },
+    initPay () {
+      if (typeof WeixinJSBridge === 'undefined') {
+        if (document.addEventListener) {
+          document.addEventListener('WeixinJSBridgeReady', this.wechatPay(), false)
+        } else if (document.attachEvent) {
+          document.attachEvent('WeixinJSBridgeReady', this.wechatPay())
+          document.attachEvent('onWeixinJSBridgeReady', this.wechatPay())
+        }
+      } else {
+        this.wechatPay()
+      }
+    },
     getBroadcast () {
       return {
         channel: 'App.User.' + window.config.userId,
