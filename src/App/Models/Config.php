@@ -41,11 +41,11 @@ class Config extends Model
                 case 'alipay':
                 config(['laravel-omnipay.gateways.'.$item->gateway.'.driver' => $item->driver]);
                 config(['laravel-omnipay.gateways.'.$item->gateway.'.options' => [
-                      'signType' => $item->other,
+                    'signType' => $item->other,
                     'appId'    => $item->app_id,
-                          'sellerEmail'     => $item->seller_id,
-                          'privateKey'      => $private_key,
-                          'alipayPublicKey' => $public_key,
+                    'sellerEmail'     => $item->seller_id,
+                    'privateKey'      => $private_key,
+                    'alipayPublicKey' => $public_key,
                     'returnUrl' => $item->return_url,
                     'notifyUrl' => $item->notify_url
                 ]]);
@@ -60,18 +60,18 @@ class Config extends Model
                     'certPath' => $public_key,
                     'returnUrl' => $item->return_url,
                     'notifyUrl' => $item->notify_url,
-                    'tradeType' => 'NATIVE',
+                    'tradeType' => 'JSAPI',
                 ]]);
                 break;
                 case 'unionpay':
                 config(['laravel-omnipay.gateways.'.$item->gateway.'.driver' => $item->driver]);
                 config(['laravel-omnipay.gateways.'.$item->gateway.'.options' => [
                     'merId' => $item->app_id,
-                        'certPath' => $private_key,
-                        'certPassword' => $item->other,
-                        'certDir'=> substr($public_key, 0, strripos($public_key, '/')), //这里需要目录
-                        'returnUrl' => $item->return_url,
-                        'notifyUrl' => $item->notify_url
+                    'certPath' => $private_key,
+                    'certPassword' => $item->other,
+                    'certDir'=> substr($public_key, 0, strripos($public_key, '/')), //这里需要目录
+                    'returnUrl' => $item->return_url,
+                    'notifyUrl' => $item->notify_url
                 ]]);
                 break;
           }

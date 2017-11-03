@@ -6,6 +6,7 @@ use Redis;
 use Route;
 use Illuminate\Support\ServiceProvider;
 use CoreCMF\Omnipay\App\Models\Config;
+use CoreCMF\Core\Support\Browser;
 
 class OmnipayServiceProvider extends ServiceProvider
 {
@@ -55,6 +56,7 @@ class OmnipayServiceProvider extends ServiceProvider
 
         $config = new Config();
         $config->configRegister();//注册配置信息
+        $this->browserConfig();
         //注册providers服务
         $this->registerProviders();
     }
@@ -78,5 +80,13 @@ class OmnipayServiceProvider extends ServiceProvider
         Route::pushMiddlewareToGroup('webOmnipay', \Illuminate\View\Middleware\ShareErrorsFromSession::class);
         Route::pushMiddlewareToGroup('webOmnipay', \Illuminate\Routing\Middleware\SubstituteBindings::class);
         Route::pushMiddlewareToGroup('webOmnipay', \CoreCMF\Omnipay\App\Http\Middleware\VerifyCsrfToken::class);
+    }
+    protected function browserConfig()
+    {
+        $browser = new Browser();
+        if ($browser->isMobile()) {
+            config(['laravel-omnipay.gateways.alipay.driver' => 'Alipay_AopWap']);
+            // config(['laravel-omnipay.gateways.wechat.driver' => 'Alipay_AopWap']);
+        }
     }
 }
