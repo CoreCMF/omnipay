@@ -38,5 +38,6 @@ class UninstallCommand extends Command
     {
         //删除对应数据库数据
         $this->info($this->uninstall->dropTable('omnipay_configs'));
+        $this->info($this->uninstall->dropTable('omnipay_orders'));
     }
 }
