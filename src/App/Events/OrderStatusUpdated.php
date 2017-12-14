@@ -1,7 +1,6 @@
 <?php
 namespace CoreCMF\Omnipay\App\Events;
 
-use Auth;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
@@ -10,7 +9,6 @@ class OrderStatusUpdated implements ShouldBroadcast
 {
     use SerializesModels;
 
-    // protected $orderModel;
     public $order;
 
     /**
