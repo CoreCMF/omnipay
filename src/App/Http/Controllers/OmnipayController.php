@@ -31,7 +31,6 @@ class OmnipayController extends Controller
             'gateway' => $gatewayNmae
         ];
         $orderId = $this->orderModel->createOrder($createOrder)->order_id;//创建支付订单
-        // $orderId = $this->request->orderId;
         $order = $this->orderModel->getOrder($orderId);
         if (!$order) {
             return '没有找到订单';

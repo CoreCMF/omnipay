@@ -60,7 +60,7 @@ class Config extends Model
                     'certPath' => $public_key,
                     'returnUrl' => $item->return_url,
                     'notifyUrl' => $item->notify_url,
-                    'tradeType' => 'JSAPI',
+                    'tradeType' => 'NATIVE',
                 ]]);
                 break;
                 case 'unionpay':
