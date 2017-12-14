@@ -6,24 +6,26 @@ use Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use CoreCMF\Omnipay\App\Models\Order;
+use CoreCMF\Socialite\App\Models\User as SocialiteUser;
 
 class OmnipayController extends Controller
 {
     private $orderModel;
     private $request;
     private $order;
+    private $socialiteUserModel;
 
-    public function __construct(Order $orderPro, Request $request)
+    public function __construct(Order $orderPro, SocialiteUser $socialiteUserPro, Request $request)
     {
         $this->orderModel = $orderPro;
+        $this->socialiteUserModel = $socialiteUserPro;
         $this->request = $request;
     }
     public function pay($gatewayNmae)
     {
-        $uid = Auth::id()? Auth::id():0;
         $createOrder = [
             'order_id'      => date('YmdHis') . mt_rand(100000, 999999),
-            'uid'     => $uid,
+            'uid'     => Auth::id(),
             'name'    => '测试订单[驱动:'.$gatewayNmae.']',
             'fee'     => 0.01,
             'gateway' => $gatewayNmae
@@ -77,7 +79,7 @@ class OmnipayController extends Controller
     protected function wechat($gateway, $order)
     {
         $wechatOrder = [
-        //   'open_id' => 'oEFAEj2KZxrRp2OijMFccnMrfN3Q',
+          'open_id' => $this->socialiteUserModel->getSocialiteId(Auth::id(), 'wechat'),
           'out_trade_no'      => $order->order_id,
           'body'              => $order->name,
           'total_fee'         => $order->fee*100, //=0.01
