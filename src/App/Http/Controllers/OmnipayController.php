@@ -78,7 +78,7 @@ class OmnipayController extends Controller
      */
     protected function wechat($gateway, $order)
     {
-        $openId => $this->socialiteUserModel->getSocialiteId(Auth::id(), 'wechat');
+        $openId = $this->socialiteUserModel->getSocialiteId(Auth::id(), 'wechat');
         $wechatOrder = [
           'open_id'           => $openId,
           'out_trade_no'      => $order->order_id,
