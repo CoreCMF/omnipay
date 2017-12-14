@@ -66,10 +66,10 @@ export default {
   methods: {
     wechatPay () {
       WeixinJSBridge.invoke(
-          'getBrandWCPayRequest',
+         'getBrandWCPayRequest',
           window.config.wechat.jsOrder,
           function (res) {
-            if (res.err_msg == "get_brand_wcpay_request:ok" ) {
+            if (res.err_msg === 'get_brand_wcpay_request:ok') {
               this.responseOrder.status = 'paid'
             }
           }
