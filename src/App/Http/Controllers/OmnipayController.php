@@ -94,7 +94,7 @@ class OmnipayController extends Controller
           'appOrder' => $response->getAppOrderData(),
           'jsOrder'  => $response->getJsOrderData(),
           'webOrder' => $response->getCodeUrl(),
-          'isWechat' => $browser->isWechat(),
+          'isWechatBrowser' => $browser->isWechat(),
         ];
 
         $builderAsset = resolve('builderAsset');
