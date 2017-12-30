@@ -5,6 +5,7 @@ namespace CoreCMF\Omnipay\App\Http\Controllers;
 use Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use CoreCMF\Core\Support\Browser;
 use CoreCMF\Omnipay\App\Models\Order;
 use CoreCMF\Socialite\App\Models\User as SocialiteUser;
 
@@ -87,10 +88,13 @@ class OmnipayController extends Controller
           'fee_type'          => 'CNY',
         ];
         $response = $gateway->purchase($wechatOrder)->send();
+
+        $browser = new Browser();
         $wechat = [
           'appOrder' => $response->getAppOrderData(),
           'jsOrder'  => $response->getJsOrderData(),
           'webOrder' => $response->getCodeUrl(),
+          'isWechat' => $browser->isWechat(),
         ];
 
         $builderAsset = resolve('builderAsset');
