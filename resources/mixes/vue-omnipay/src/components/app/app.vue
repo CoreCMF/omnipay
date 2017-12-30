@@ -40,7 +40,9 @@ import echo from '../mixins/echo'
 export default {
   name: 'app',
   created () {
-    this.setWechatPay()
+    if (this.isWechatBrowser) {
+      this.setWechatPay()
+    }
   },
   mixins: [echo],
   data () {
@@ -70,30 +72,18 @@ export default {
     }
   },
   methods: {
-    //当微信浏览器时自动异步反复检测支付函数WeixinJSBridge直到找到位置
+    /**
+     * 当是微信浏览器时 自动异步反复检测支付函数WeixinJSBridge直到找到为止
+     */
     setWechatPay () {
-      if (this.isWechatBrowser) {
-        let _this = this
-        setTimeout(function () {
-          if (typeof WeixinJSBridge === 'undefined') {
-            _this.setWechatPay()
-          } else {
-            _this.initWechatPay()
-          }
-        }, 1000)
-      }
-    },
-    initWechatPay () {
-      if (typeof WeixinJSBridge === 'undefined') {
-        if (document.addEventListener) {
-          document.addEventListener('WeixinJSBridgeReady', this.wechatPay(), false)
-        } else if (document.attachEvent) {
-          document.attachEvent('WeixinJSBridgeReady', this.wechatPay())
-          document.attachEvent('onWeixinJSBridgeReady', this.wechatPay())
+      let _this = this
+      setTimeout(function () {
+        if (typeof WeixinJSBridge === 'undefined') {
+          _this.setWechatPay()
+        } else {
+          _this.wechatPay()
         }
-      } else {
-        this.wechatPay()
-      }
+      }, 500)
     },
     wechatPay () {
       WeixinJSBridge.invoke(
