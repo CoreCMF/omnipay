@@ -20,7 +20,6 @@
           <span>未支付</span>
         </div>
         <p>订单号：{{ order.query_id }}</p>
-        <el-button type="success" @click="initPay()" v-if="isWechatBrowser" >确认支付</el-button>
       </div>
       <div class="right-wechat" v-else >
         <div class="pic">
@@ -41,6 +40,7 @@ import echo from '../mixins/echo'
 export default {
   name: 'app',
   created () {
+    this.setWechatPay()
   },
   mixins: [echo],
   data () {
@@ -70,18 +70,20 @@ export default {
     }
   },
   methods: {
-    wechatPay () {
-      WeixinJSBridge.invoke(
-         'getBrandWCPayRequest',
-          window.config.wechat.jsOrder,
-          function (res) {
-            if (res.err_msg === 'get_brand_wcpay_request:ok') {
-              this.responseOrder.status = 'paid'
-            }
+    //当微信浏览器时自动异步反复检测支付函数WeixinJSBridge直到找到位置
+    setWechatPay () {
+      if (this.isWechatBrowser) {
+        let _this = this
+        setTimeout(function () {
+          if (typeof WeixinJSBridge === 'undefined') {
+            _this.setWechatPay()
+          } else {
+            _this.initWechatPay()
           }
-      )
+        }, 1000)
+      }
     },
-    initPay () {
+    initWechatPay () {
       if (typeof WeixinJSBridge === 'undefined') {
         if (document.addEventListener) {
           document.addEventListener('WeixinJSBridgeReady', this.wechatPay(), false)
@@ -92,6 +94,17 @@ export default {
       } else {
         this.wechatPay()
       }
+    },
+    wechatPay () {
+      WeixinJSBridge.invoke(
+         'getBrandWCPayRequest',
+          window.config.wechat.jsOrder,
+          function (res) {
+            if (res.err_msg === 'get_brand_wcpay_request:ok') {
+              this.responseOrder.status = 'paid'
+            }
+          }
+      )
     },
     getBroadcast () {
       return {
