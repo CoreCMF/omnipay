@@ -84,9 +84,13 @@ class OmnipayServiceProvider extends ServiceProvider
     protected function browserConfig()
     {
         $browser = new Browser();
+        // 手机配置
         if ($browser->isMobile()) {
             config(['laravel-omnipay.gateways.alipay.driver' => 'Alipay_AopWap']);
-            // config(['laravel-omnipay.gateways.wechat.driver' => 'Alipay_AopWap']);
+        }
+        // 微信端配置
+        if ($browser->isWechat()) {
+            config(['laravel-omnipay.gateways.wechat.options.tradeType' => 'JSAPI']);
         }
     }
 }
