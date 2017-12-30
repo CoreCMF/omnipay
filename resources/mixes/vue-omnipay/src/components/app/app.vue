@@ -9,7 +9,6 @@
           <p>订单编号：{{ order.order_id }}</p>
           <p>创建时间：{{ order.created_at }}</p>
         </div>
-        <button type="button" @click="initPay()" v-if="isWechatBrowser" >确认支付</button>
       </div>
       <div class="right" v-if="!showQrcode">
         <div class="paid" v-if=" order.status == 'paid' ">
@@ -21,6 +20,7 @@
           <span>未支付</span>
         </div>
         <p>订单号：{{ order.query_id }}</p>
+        <el-button type="success" @click="initPay()" v-if="isWechatBrowser" >确认支付</el-button>
       </div>
       <div class="right-wechat" v-else >
         <div class="pic">

@@ -5,7 +5,9 @@ import 'font-awesome/css/font-awesome.css'
 window._ = require('lodash')
 import Echo from 'laravel-echo'
 import Pusher from 'pusher-js'
+import ElementUI from 'element-ui'
 import BuilderVueElement from 'builder-vue-element'
+Vue.use(ElementUI)
 Vue.use(BuilderVueElement)
 
 window.Pusher = Pusher
