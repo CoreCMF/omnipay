@@ -9,9 +9,9 @@
           <p>订单编号：{{ order.order_id }}</p>
           <p>创建时间：{{ order.created_at }}</p>
         </div>
-        <button type="button" @click="initPay()">确认支付</button>
+        <button type="button" @click="initPay()" v-if="isWechatBrowser" >确认支付</button>
       </div>
-      <div class="right" v-if="order.gateway != 'wechat' || order.status == 'paid'">
+      <div class="right" v-if="!showQrcode">
         <div class="paid" v-if=" order.status == 'paid' ">
           <i class="fa fa-check-circle"></i>
           <span>支付成功</span>
@@ -22,7 +22,7 @@
         </div>
         <p>订单号：{{ order.query_id }}</p>
       </div>
-      <div class="right-wechat" v-else>
+      <div class="right-wechat" v-else >
         <div class="pic">
           <bve-qrcode-item
             class="qrcode"
@@ -52,12 +52,18 @@ export default {
     }
   },
   computed: {
+    isWechatBrowser () {
+      return window.config.isWechatBrowser ? window.config.isWechatBrowser : false
+    },
     order () {
       return this.responseOrder ? this.responseOrder : window.config.order
     },
+    // 是否显示二维码
+    showQrcode () {
+      return this.isWechatBrowser ? false : (this.order.gateway === 'wechat')
+    },
     /**
      * [wechatQrcode 微信支付pc二维码]
-     * @return {[type]} [description]
      */
     wechatQrcode () {
       return window.config.wechat ? window.config.wechat.webOrder : null
