@@ -21,6 +21,7 @@
     "require": {
         "corecmf/admin": "^1.3",
         "corecmf/socialite": "^1.3",
+        "php-http/guzzle6-adapter": "^1.1",
         "laravel-omnipay/laravel-omnipay": "^3.0",
         "laravel-omnipay/omnipay-unionpay": "^3.0",
         "laravel-omnipay/omnipay-wechatpay": "^3.0",
