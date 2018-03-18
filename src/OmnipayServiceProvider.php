@@ -57,18 +57,6 @@ class OmnipayServiceProvider extends ServiceProvider
         $config = new Config();
         $config->configRegister();//注册配置信息
         $this->browserConfig();
-        //注册providers服务
-        $this->registerProviders();
-    }
-    /**
-     * 注册引用服务
-     */
-    public function registerProviders()
-    {
-        $providers = config('omnipay.providers');
-        foreach ($providers as $provider) {
-            $this->app->register($provider);
-        }
     }
     //注册webOmnipay中间件
     public function middleware()
