@@ -58,7 +58,7 @@
             "version": "2.3.1",
             "providers": [
                 "CoreCMF\\Omnipay\\OmnipayServiceProvider",
-                "Ignited\\LaravelOmnipay\\LaravelOmnipayServiceProvider",
+                "Omnipay\\LaravelOmnipay\\LaravelOmnipayServiceProvider",
                 "CoreCMF\\Omnipay\\Providers\\EventServiceProvider"
             ],
             "install": "corecmf:omnipay:install",
