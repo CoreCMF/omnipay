@@ -49,6 +49,20 @@
     "extra": {
         "branch-alias": {
             "dev-master": "2.3.1-dev"
+        },
+        "corecmf": {
+            "name": "Omnipay",
+            "title": "支付管理",
+            "description": "第三方支付管理包括阿里云支付宝支付、微信支付、银联支付",
+            "author": "BigRocs",
+            "version": "2.3.1",
+            "providers": [
+                "CoreCMF\\Omnipay\\OmnipayServiceProvider",
+                "Ignited\\LaravelOmnipay\\LaravelOmnipayServiceProvider",
+                "CoreCMF\\Omnipay\\Providers\\EventServiceProvider",
+            ],
+            "install": "corecmf:omnipay:install",
+            "uninstall": "corecmf:omnipay:uninstall"
         }
     },
     "config": {
