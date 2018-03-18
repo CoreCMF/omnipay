@@ -59,7 +59,7 @@
             "providers": [
                 "CoreCMF\\Omnipay\\OmnipayServiceProvider",
                 "Ignited\\LaravelOmnipay\\LaravelOmnipayServiceProvider",
-                "CoreCMF\\Omnipay\\Providers\\EventServiceProvider",
+                "CoreCMF\\Omnipay\\Providers\\EventServiceProvider"
             ],
             "install": "corecmf:omnipay:install",
             "uninstall": "corecmf:omnipay:uninstall"
